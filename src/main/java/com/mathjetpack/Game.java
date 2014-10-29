@@ -33,7 +33,7 @@ public class Game extends Canvas implements Runnable {
     private boolean mRunning;
 
     // Debugging info
-    private boolean mShowInfo = true;
+    private boolean mShowInfo = false;
 
     public Game(int width, int height) {
 
