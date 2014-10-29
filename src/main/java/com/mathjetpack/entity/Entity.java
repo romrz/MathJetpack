@@ -1,6 +1,10 @@
 package mathjetpack.entity;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsConfiguration;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
 import mathjetpack.Vector2;
@@ -72,7 +76,15 @@ public class Entity {
     }
 
     public void setImage(BufferedImage image) {
-        mImage = image;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice gd = ge.getDefaultScreenDevice();
+	GraphicsConfiguration gc = gd.getDefaultConfiguration();
+	mImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.TRANSLUCENT);
+	
+	Graphics2D g = (Graphics2D) mImage.getGraphics();
+
+	g.drawImage(image, 0, 0, null);
+	
     }
 
     public BufferedImage getImage() {
