@@ -175,12 +175,12 @@ public class Game extends Canvas implements Runnable {
 
         long previous = System.nanoTime();
         long current;
-        long period = 30000000L;
+        long period = 10000000L;
         long diff;
         long sleepTime;
         double elapsed;
 
-        long t1, t2; // Debug info
+        long t1s, t1e, t2s, t2e, t3s = 0, t3e = 0, t4s, t4e; // Debug info
 
         // Game loop
         while(mRunning) {
@@ -192,19 +192,21 @@ public class Game extends Canvas implements Runnable {
 
             previous = current;
 
-            t1 = System.nanoTime(); // Debug info
-
+            t1s = System.nanoTime(); // Updating start
             updateGame(elapsed);
-            render();
-
-            t2 = System.nanoTime(); // Debug info
-            System.out.printf("Time elapsed: %.4f\tTime rendering: %.4f\tFPS: %d\n", elapsed, (t2 - t1) / 1000000000.0, mFrameRate);
+	    t1e = System.nanoTime(); // Updating end
+            
+	    t2s = System.nanoTime(); // Rendering start
+	    render();
+	    t2e = System.nanoTime(); // Rendering end
 
             if(sleepTime < 0)
                 sleepTime = 1;
 
             try {
-                Thread.sleep(sleepTime);
+		t3s = System.nanoTime(); // Sleeping start
+                Thread.sleep(1);
+		t3e = System.nanoTime(); // Sleeping end
             }
             catch(InterruptedException e) {
                 System.out.println("Exception in main loop");
@@ -217,6 +219,11 @@ public class Game extends Canvas implements Runnable {
                 frameCount = 0;
                 frameTime = current;
             }
+
+	    
+	    // Debug info
+	    System.out.printf("Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\n",
+			      elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate);
 
         }
     }
