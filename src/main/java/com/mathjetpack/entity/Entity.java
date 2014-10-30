@@ -79,13 +79,16 @@ public class Entity {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	GraphicsConfiguration gc = gd.getDefaultConfiguration();
-	mImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.TRANSLUCENT);
+
+	mImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
 
 	System.out.println("Available memory: " + gd.getAvailableAcceleratedMemory());
-	
-	Graphics2D g = (Graphics2D) mImage.getGraphics();
 
-	g.drawImage(image, 0, 0, null);
+	System.out.println("Is Accelerated: " + mImage.getCapabilities(gc).isAccelerated());
+	
+	Graphics2D g = (Graphics2D) mImage.createGraphics();
+
+	g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 	
     }
 
