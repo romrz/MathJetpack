@@ -92,6 +92,15 @@ public class Entity {
 	
     }
 
+    private void info() {
+	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice gd = ge.getDefaultScreenDevice();
+	GraphicsConfiguration gc = gd.getDefaultConfiguration();
+	
+	System.out.println("Is Accelerated: " + mImage.getCapabilities(gc).isAccelerated());
+
+    }
+
     public BufferedImage getImage() {
         return mImage;
     }
@@ -109,6 +118,8 @@ public class Entity {
 
         // Updates the velocity from acceleration
         mVelocity.addScaledVector(mAcceleration, duration);
+
+	info();
 
     }
 
