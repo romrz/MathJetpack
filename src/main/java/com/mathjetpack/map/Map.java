@@ -34,7 +34,7 @@ public class Map {
 
         MapImage image; // Auxiliary Image to load the images
 
-        int vel = -300;
+        int vel = -200;
 
         try {
             // Loads the Clouds Image

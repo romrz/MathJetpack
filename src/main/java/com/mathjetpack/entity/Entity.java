@@ -80,7 +80,7 @@ public class Entity {
 	GraphicsDevice gd = ge.getDefaultScreenDevice();
 	GraphicsConfiguration gc = gd.getDefaultConfiguration();
 
-	mImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+	mImage = gc.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.BITMASK);
 
 	System.out.println("Available memory: " + gd.getAvailableAcceleratedMemory());
 
