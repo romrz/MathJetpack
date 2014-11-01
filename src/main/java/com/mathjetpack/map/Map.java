@@ -38,43 +38,33 @@ public class Map {
 
         try {
             // Loads the Clouds Image
-            image = new MapImage(this);
-            image.setWidth(500);
-            image.setHeight(175);
-            image.setPosition(0, 10);
-            image.setVelocity(vel * 0.1, 0);
+	    image = new MapImage(this);
+            image.setWidth(50);
+            image.setHeight(640);
+            image.setPosition(0, 0);
+            image.setVelocity(0, 0);
             image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/Clouds.png")));
+            image.setImage(ImageIO.read(Map.class.getResource("/map/sky_r.png")));
             mMapImages.add(image);
 
             // Loads the Mountains Image
             image = new MapImage(this);
-            image.setWidth(325);
-            image.setHeight(325);
-            image.setPosition(0, 185);
-            image.setVelocity(vel * 0.2, 0);
+            image.setWidth(528);
+            image.setHeight(192);
+            image.setPosition(0, 368);
+            image.setVelocity(vel * 0.1, 0);
             image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/Mountains.png")));
-            mMapImages.add(image);
-
-            // Loads the Background Floor Image
-            image = new MapImage(this);
-            image.setWidth(120);
-            image.setHeight(120);
-            image.setPosition(0, 520);
-            image.setVelocity(vel, 0);
-            image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/BackgroundFloor.png")));
+            image.setImage(ImageIO.read(Map.class.getResource("/map/mountains_r.png")));
             mMapImages.add(image);
 
             // Loads the Floor Image
             image = new MapImage(this);
-            image.setWidth(60);
-            image.setHeight(40);
-            image.setPosition(0, 520);
+            image.setWidth(65);
+            image.setHeight(80);
+            image.setPosition(0, 560);
             image.setVelocity(vel, 0);
             image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/Floor.png")));
+            image.setImage(ImageIO.read(Map.class.getResource("/map/grass_r.png")));
             mMapImages.add(image);
 
         }
