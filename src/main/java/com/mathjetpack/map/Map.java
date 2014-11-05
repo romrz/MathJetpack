@@ -16,11 +16,12 @@ public class Map {
     private int mWidth;
     private int mHeight;
 
+    // Background Images
     private LinkedList<MapImage> mMapImages;
 
     /**
      * Constructor.
-     * Loads the Map Images
+     * Initialize the map and loads the Map Images
      *
      * @param width
      * @param height
@@ -29,11 +30,19 @@ public class Map {
 
         mWidth = width;
         mHeight = height;
-
         mMapImages = new LinkedList<MapImage>();
 
-        MapImage image; // Auxiliary Image to load the images
+	loadImages();
+    }
 
+    /**
+     * Loads the images of the map
+     */
+    private loadImages() {
+	
+	MapImage image; // Auxiliary Image to load the images
+
+	// Map velocity
         int vel = -200;
 
         try {
@@ -90,20 +99,27 @@ public class Map {
         return mHeight;
     }
 
+    /**
+     * Moves the map
+     */
     public void move(double duration) {
 
-        // Updates the Map Images
+        // Moves the Map Images
         for(MapImage image : mMapImages)
             image.move(duration);
 
     }
 
+    /**
+     * Draws the Map
+     */
     public void draw(Graphics2D g) {
 
         // Draws the background
-        g.setColor(Color.BLUE);
-        g.fillRect(0, 0, mWidth, mHeight);
+        //g.setColor(Color.BLUE);
+        //g.fillRect(0, 0, mWidth, mHeight);
 
+	// Draws the images
         for(MapImage image : mMapImages)
             image.draw(g);
 
