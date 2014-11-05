@@ -1,0 +1,8 @@
+mathjetpack\MathJetpack.class
+mathjetpack\Game.class
+mathjetpack\Input.class
+mathjetpack\entity\Entity.class
+mathjetpack\map\MapImage.class
+mathjetpack\map\Map.class
+mathjetpack\Game$States.class
+mathjetpack\Vector2.class

@@ -38,7 +38,7 @@ public class Map {
     /**
      * Loads the images of the map
      */
-    private loadImages() {
+    private void loadImages() {
 	
 	MapImage image; // Auxiliary Image to load the images
 

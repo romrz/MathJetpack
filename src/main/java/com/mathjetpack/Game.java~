@@ -34,7 +34,6 @@ public class Game extends Canvas implements Runnable {
 
     // Debugging info
     private boolean mShowInfo = false;
-    private boolean mPrintInfo = true;
 
     public Game(int width, int height) {
 
@@ -175,8 +174,8 @@ public class Game extends Canvas implements Runnable {
         long frameTime = 0;
 
         long previous = System.nanoTime();
-        long current = previous;
-        long period = 1000000000L / 100L;
+        long current;
+        long period = 10000000L;
         long diff;
         long sleepTime;
         double elapsed;
@@ -188,7 +187,14 @@ public class Game extends Canvas implements Runnable {
 
             current = System.nanoTime();
             elapsed = (current - previous) / 1000000000.0;
-	    previous = current;
+
+            sleepTime = (period - (current - previous)) / 1000000 ;
+
+            previous = current;
+
+	    // Debug info
+	    System.out.printf("Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\n",
+			      elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate);
 
             t1s = System.nanoTime(); // Updating start
             updateGame(elapsed);
@@ -198,14 +204,12 @@ public class Game extends Canvas implements Runnable {
 	    render();
 	    t2e = System.nanoTime(); // Rendering end
 
-	    sleepTime = (period - (System.nanoTime() - current)) / 1000000;            
-
             if(sleepTime < 0)
-                sleepTime = 0;
+                sleepTime = 1;
 
             try {
 		t3s = System.nanoTime(); // Sleeping start
-                Thread.sleep(sleepTime);
+                Thread.sleep(1);
 		t3e = System.nanoTime(); // Sleeping end
             }
             catch(InterruptedException e) {
@@ -219,16 +223,7 @@ public class Game extends Canvas implements Runnable {
                 frameCount = 0;
                 frameTime = current;
             }
-		 
-	    // Debug info
-	    if(mPrintInfo) {
-		System.out.printf("Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\tSleepTime: %.4f\n",
-				  elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate, sleepTime / 1000.0);
 
-	    }
-	
-	    //previous = current;
-	    //current = System.nanoTime();
         }
     }
 
