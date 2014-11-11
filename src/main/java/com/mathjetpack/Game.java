@@ -2,6 +2,7 @@ package mathjetpack;
 
 import mathjetpack.map.Map;
 import mathjetpack.entity.Entity;
+import mathjetpack.entity.Player;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -12,12 +13,15 @@ import java.util.LinkedList;
  */
 public class Game extends Canvas implements Runnable {
 
-    // Panel dimension
+    // Canvas dimension
     private int mWidth;
     private int mHeight;
 
     // Game entities
     private LinkedList<Entity> mEntities;
+
+    // Player
+    private Player player;
 
     // The map of the game
     private Map mMap;
@@ -34,7 +38,7 @@ public class Game extends Canvas implements Runnable {
 
     // Debugging info
     private boolean mShowInfo = false;
-    private boolean mPrintInfo = true;
+    private boolean mPrintInfo = false;
 
     public Game(int width, int height) {
 
@@ -60,7 +64,12 @@ public class Game extends Canvas implements Runnable {
      * Prepares the game to start
      */
     public void init() {
-        mMap = new Map(mWidth, mHeight);
+	Vector2 playerVelocity = new Vector2(200, 0);
+
+	player = new Player(); // Creates the player
+	addEntity(player); // Adds the player to the game entities
+
+        mMap = new Map(mWidth, mHeight, playerVelocity);
     }
 
     /**
@@ -176,7 +185,7 @@ public class Game extends Canvas implements Runnable {
 
         long previous = System.nanoTime();
         long current = previous;
-        long period = 1000000000L / 100L;
+        long period = 1000000000L / 80L;
         long diff;
         long sleepTime;
         double elapsed;

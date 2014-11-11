@@ -1,6 +1,7 @@
 package mathjetpack.map;
 
 import mathjetpack.Game;
+import mathjetpack.Vector2;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,25 +26,24 @@ public class Map {
      *
      * @param width
      * @param height
+     * @param velocity Map's velocity
      */
-    public Map(int width, int height) {
+    public Map(int width, int height, Vector2 velocity) {
 
         mWidth = width;
         mHeight = height;
         mMapImages = new LinkedList<MapImage>();
 
-	loadImages();
+	loadImages(velocity);
     }
 
     /**
      * Loads the images of the map
+     * @param velocity Map's velocity
      */
-    private void loadImages() {
+    private void loadImages(Vector2 velocity) {
 	
 	MapImage image; // Auxiliary Image to load the images
-
-	// Map velocity
-        int vel = -200;
 
         try {
             // Loads the Clouds Image
@@ -61,7 +61,7 @@ public class Map {
             image.setWidth(528);
             image.setHeight(192);
             image.setPosition(0, 368);
-            image.setVelocity(vel * 0.1, 0);
+            image.setVelocity(velocity.x * -0.1, 0);
             image.repeatX(true);
             image.setImage(ImageIO.read(Map.class.getResource("/map/mountains_r.png")));
             mMapImages.add(image);
@@ -71,7 +71,7 @@ public class Map {
             image.setWidth(65);
             image.setHeight(80);
             image.setPosition(0, 560);
-            image.setVelocity(vel, 0);
+            image.setVelocity(-velocity.x, 0);
             image.repeatX(true);
             image.setImage(ImageIO.read(Map.class.getResource("/map/grass_r.png")));
             mMapImages.add(image);
