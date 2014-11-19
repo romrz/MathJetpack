@@ -1,1 +1,4 @@
+mathjetpack/entity/Wall.class
+mathjetpack/entity/Coin.class
+mathjetpack/entity/QuestionBox.class
 mathjetpack/entity/Player.class

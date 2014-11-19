@@ -3,14 +3,18 @@ package mathjetpack;
 import mathjetpack.map.Map;
 import mathjetpack.entity.Entity;
 import mathjetpack.entity.Player;
+import mathjetpack.entity.QuestionBox;
+import mathjetpack.entity.Wall;
+import mathjetpack.entity.Coin;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.util.LinkedList;
 
-/**
- * Created by rom on 16/09/14.
- */
+
 public class Game extends Canvas implements Runnable {
 
     // Canvas dimension
@@ -30,6 +34,16 @@ public class Game extends Canvas implements Runnable {
     public static enum States {STARTING, STARTED, PLAYING, PAUSED};
     private States mState = States.STARTING;
 
+    /*
+      Entities' Images
+      Only one image is used for all the entities of the same class
+     */
+    private BufferedImage mPlayerImage;
+    private BufferedImage mWallImage;
+    private BufferedImage mCoinImage;
+    private BufferedImage mBirdImage;
+    private BufferedImage mQuestionBoxImage;
+        
     // Frames per second
     private int mFrameRate;
 
@@ -40,6 +54,10 @@ public class Game extends Canvas implements Runnable {
     private boolean mShowInfo = false;
     private boolean mPrintInfo = false;
 
+    /**
+     * Game Constructor.
+     * Initializes the game
+     */
     public Game(int width, int height) {
 
         // Sets the size to the canvas
@@ -50,6 +68,7 @@ public class Game extends Canvas implements Runnable {
         setFocusable(true);
         requestFocus();
 
+	// Sets the canvas dimensions
         mWidth = width;
         mHeight = height;
 
@@ -57,6 +76,7 @@ public class Game extends Canvas implements Runnable {
 
         mEntities = new LinkedList<Entity>();
 
+	// Prepares the game
         init();
     }
 
@@ -64,12 +84,94 @@ public class Game extends Canvas implements Runnable {
      * Prepares the game to start
      */
     public void init() {
-	Vector2 playerVelocity = new Vector2(200, 0);
+	// Loads the images
+	loadImages();
 
-	player = new Player(); // Creates the player
+	//Vector2 playerVelocity = new Vector2(50, 0);
+
+	player = new Player(mPlayerImage); // Creates the player
+	player.setVelocity(200, 0);
+	player.setRelativeVelocity(player.getVelocity());
 	addEntity(player); // Adds the player to the game entities
+	
+	Entity q = new QuestionBox(mQuestionBoxImage);
+	Entity w = new Wall(mWallImage);
+	Entity c = new Coin(mCoinImage);
+	Entity c1 = new Coin(mCoinImage);
+	Entity c2 = new Coin(mCoinImage);
 
-        mMap = new Map(mWidth, mHeight, playerVelocity);
+	q.setRelativeVelocity(player.getVelocity());
+	w.setRelativeVelocity(player.getVelocity());
+	c.setRelativeVelocity(player.getVelocity());
+	c1.setRelativeVelocity(player.getVelocity());
+	c2.setRelativeVelocity(player.getVelocity());
+
+	q.setPosition(2000, 350);
+	w.setPosition(3000, 350);
+	c.setPosition(1000, 350);
+	c1.setPosition(1040, 350);
+	c2.setPosition(1080, 350);
+
+
+	addEntity(q);
+	addEntity(w);
+	addEntity(c);
+	addEntity(c1);
+	addEntity(c2);
+
+        mMap = new Map(mWidth, mHeight, player.getVelocity());
+    }
+
+    /**
+     * Loads the images used in the game
+     */
+    private void loadImages() {
+
+	/*
+	  Creates compatible images
+	 */
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice gd = ge.getDefaultScreenDevice();
+	GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+	BufferedImage auxImage = null;
+	Graphics2D g = null;
+
+	try {
+
+	    // Player Image
+	    auxImage = ImageIO.read(Game.class.getResource("/entities/player.png"));
+	    mPlayerImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
+	    g = (Graphics2D) mPlayerImage.createGraphics();
+	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
+	    g.dispose();
+
+	    // Wall Image
+	    auxImage = ImageIO.read(Game.class.getResource("/entities/wall.png"));
+	    mWallImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
+	    g = (Graphics2D) mWallImage.createGraphics();
+	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
+	    g.dispose();
+	    
+	    // Coin Image 
+	    auxImage = ImageIO.read(Game.class.getResource("/entities/coin.png"));
+	    mCoinImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
+	    g = (Graphics2D) mCoinImage.createGraphics();
+	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
+	    g.dispose();
+
+	    // Question Box Image
+	    auxImage = ImageIO.read(Game.class.getResource("/entities/question_box.png"));
+	    mQuestionBoxImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
+	    g = (Graphics2D) mQuestionBoxImage.createGraphics();
+	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
+	    g.dispose();
+
+	}
+	catch(Exception e) {
+	    System.out.println("Error while loading the images.");
+	}
+	
     }
 
     /**
@@ -231,14 +333,11 @@ public class Game extends Canvas implements Runnable {
 		 
 	    // Debug info
 	    if(mPrintInfo) {
-		System.out.printf("Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\tSleepTime: %.4f\n",
-				  elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate, sleepTime / 1000.0);
-
+		System.out.printf(
+		"Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\tSleepTime: %.4f\n",
+		elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate, sleepTime / 1000.0);
 	    }
-	
-	    //previous = current;
-	    //current = System.nanoTime();
-        }
+	}
     }
 
     /**

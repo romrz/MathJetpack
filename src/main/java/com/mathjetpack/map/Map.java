@@ -26,22 +26,22 @@ public class Map {
      *
      * @param width
      * @param height
-     * @param velocity Map's velocity
+     * @param relativeVelocity Map's velocity
      */
-    public Map(int width, int height, Vector2 velocity) {
+    public Map(int width, int height, Vector2 relativeVelocity) {
 
         mWidth = width;
         mHeight = height;
         mMapImages = new LinkedList<MapImage>();
 
-	loadImages(velocity);
+	loadImages(relativeVelocity);
     }
 
     /**
      * Loads the images of the map
-     * @param velocity Map's velocity
+     * @param relativeVelocity Map's velocity
      */
-    private void loadImages(Vector2 velocity) {
+    private void loadImages(Vector2 relativeVelocity) {
 	
 	MapImage image; // Auxiliary Image to load the images
 
@@ -52,6 +52,7 @@ public class Map {
             image.setHeight(640);
             image.setPosition(0, 0);
             image.setVelocity(0, 0);
+	    image.setRelativeVelocity(new Vector2());
             image.repeatX(true);
             image.setImage(ImageIO.read(Map.class.getResource("/map/sky_r.png")));
             mMapImages.add(image);
@@ -61,7 +62,8 @@ public class Map {
             image.setWidth(528);
             image.setHeight(192);
             image.setPosition(0, 368);
-            image.setVelocity(velocity.x * -0.1, 0);
+            image.setVelocity(relativeVelocity.x * 0.9, 0);
+	    image.setRelativeVelocity(relativeVelocity);
             image.repeatX(true);
             image.setImage(ImageIO.read(Map.class.getResource("/map/mountains_r.png")));
             mMapImages.add(image);
@@ -71,7 +73,8 @@ public class Map {
             image.setWidth(65);
             image.setHeight(80);
             image.setPosition(0, 560);
-            image.setVelocity(-velocity.x, 0);
+            image.setVelocity(0, 0);
+	    image.setRelativeVelocity(relativeVelocity);
             image.repeatX(true);
             image.setImage(ImageIO.read(Map.class.getResource("/map/grass_r.png")));
             mMapImages.add(image);
