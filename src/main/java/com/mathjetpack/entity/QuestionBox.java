@@ -2,7 +2,7 @@ package mathjetpack.entity;
 
 import java.awt.image.BufferedImage;
 
-public class QuestionBox extends Entity {
+public class QuestionBox extends AnimatedEntity {
     
     /**
      * Initializes the QuestionBox
@@ -15,6 +15,11 @@ public class QuestionBox extends Entity {
 	setHeight(44);
 	//setPosition(400, 350);
 	setVelocity(0, 0);
+
+	// Add animations
+	addAnimation(new AnimationInfo());
+	setAnimation(1);
+
     }
 
 }

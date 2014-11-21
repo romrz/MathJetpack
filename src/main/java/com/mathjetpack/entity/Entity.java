@@ -1,10 +1,6 @@
 package mathjetpack.entity;
 
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsConfiguration;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
 import mathjetpack.Vector2;
@@ -34,27 +30,14 @@ public class Entity {
      */
     protected Vector2 mRelativeVelocity;
 
-
     // Image for this entity
     protected BufferedImage mImage;
 
-    /* Entity Animation */
-
-    // Total frames of the animation
-    private int mFrames;
-    // Current frame of the animation
-    private int mCurrentFrame = 0;
-    // Frame duration
-    private double mFrameTime;
-    // Time counter
-    private double mTimeCount;
-    // Columns on the sprite sheet
-    private int mColumns;
-    
-
     /**
      * Constructor.
-     * Initializes its attributes with default values
+     * Initializes its attributes with the given animation's number
+     *
+     * @param animations Then number of animations for this entity
      */
     public Entity() {
         mWidth = mHeight = 0;
@@ -62,11 +45,6 @@ public class Entity {
         mPosition = new Vector2();
         mVelocity = new Vector2();
         mAcceleration = new Vector2();
-
-	// Default animation settings
-	setAnimationFPS(24);
-	setAnimationFrames(1);
-	setColumns(1);
     }
 
     public void setWidth(int width) {
@@ -117,67 +95,17 @@ public class Entity {
     }
 
     /**
-     * Sets the number of images in the sprite sheet
-     * @param frames
-     */
-    public void setAnimationFrames(int frames) {
-	mFrames = frames;
-    }
-
-    /**
-     * Sets the number of columns in the spritesheet
-     * @param columns
-     */
-    public void setColumns(int columns) {
-	mColumns = columns;
-    }
-
-    /**
-     * Sets the speed of the animation in frames per second
-     * @param fps
-     */
-    public void setAnimationFPS(int fps) {
-	mFrameTime = 1.0 / (double) fps;
-    }
-    
-    /**
-     * Animates the entity
-     */
-    public void animate(double duration) {
-	
-	if(mFrames > 1) {
-	    
-	    mTimeCount += duration;
-
-	    if(mTimeCount >= mFrameTime) {
-		
-		mTimeCount -= mFrameTime;
-
-		mCurrentFrame++;
-
-		if(mCurrentFrame > mFrames - 1)
-		    mCurrentFrame = 0;
-	    }
-	}
-    }
-
-    /**
      * Integrates the entity in time by the given amount.
      * This method uses the Euler integration method
      *
      * @param duration The duration of the frame
      */
     public void move(double duration) {
-
-	// Animates the entity
-	animate(duration);
-
         // Updates the position from the velocity
 	mPosition.x += (mVelocity.x - mRelativeVelocity.x) * duration;
 	mPosition.y += (mVelocity.y - mRelativeVelocity.y) * duration;
 	// mPosition.addScaledVector(mRelativeVelocity, duration);
         // mPosition.addScaledVector(mVelocity, duration);
-
 	
         // Updates the velocity from acceleration
         mVelocity.addScaledVector(mAcceleration, duration);
@@ -190,12 +118,7 @@ public class Entity {
      */
     public void draw(Graphics2D g) {
 
-	int frameX = (mCurrentFrame % mColumns) * mWidth;
-	int frameY = (mCurrentFrame / mColumns) * mHeight;
-
-        g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, (int) mPosition.x + mWidth, (int) mPosition.y + mHeight,
-		    frameX, frameY, frameX + mWidth, frameY + mHeight, null);
+        g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
 
     }
-
 }

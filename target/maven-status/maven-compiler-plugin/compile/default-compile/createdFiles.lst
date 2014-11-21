@@ -1,3 +1,5 @@
+mathjetpack/entity/AnimationInfo.class
+mathjetpack/entity/AnimatedEntity.class
 mathjetpack/entity/Wall.class
 mathjetpack/entity/Coin.class
 mathjetpack/entity/QuestionBox.class

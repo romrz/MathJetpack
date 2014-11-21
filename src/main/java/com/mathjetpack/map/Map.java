@@ -127,5 +127,4 @@ public class Map {
             image.draw(g);
 
     }
-
 }

@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 
 import mathjetpack.Vector2;
 
-public class Player extends Entity {
+public class Player extends AnimatedEntity {
     
     /**
      * Initializes the player's attributes
@@ -18,6 +18,10 @@ public class Player extends Entity {
 	setWidth(40);
 	setHeight(60);
 	setPosition(100, 350);
+
+	// Add animations
+	addAnimation(new AnimationInfo());
+	setAnimation(1);
 	
     }
 

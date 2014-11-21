@@ -2,7 +2,7 @@ package mathjetpack.entity;
 
 import java.awt.image.BufferedImage;
 
-public class Coin extends Entity {
+public class Coin extends AnimatedEntity {
     
     /**
      * Initializes the Coin
@@ -15,9 +15,13 @@ public class Coin extends Entity {
 	setHeight(33);
 	setVelocity(0, 0);
 
-	setAnimationFPS(6);
-	setAnimationFrames(3);
+
+	// Set animations	
+	setImageFrames(3);
 	setColumns(3);
+
+	addAnimation(new AnimationInfo(0, 3, 1, 6, true));
+	setAnimation(1);
     }
 
 }

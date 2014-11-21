@@ -15,6 +15,7 @@ public class Wall extends Entity {
 	setHeight(40);
 	// setPosition(300, 500);
 	setVelocity(0, 0);
+	
     }
 
 }
