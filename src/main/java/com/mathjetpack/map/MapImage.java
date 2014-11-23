@@ -24,6 +24,8 @@ public class MapImage extends Entity {
         super();
 
         mMap = map;
+
+	setAcceleration(0, 0); 
     }
 
     /**

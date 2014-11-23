@@ -13,7 +13,7 @@ public class Entity {
     protected int mHeight;
 
     // Entity inverse mass
-    //private double mInverseMass;
+    private double mInverseMass;
 
     // Entity position
     protected Vector2 mPosition;
@@ -21,6 +21,11 @@ public class Entity {
     protected Vector2 mVelocity;
     // Entity Acceleration
     protected Vector2 mAcceleration;
+    
+    // Auxiliary in accumulation the the resulting acceleration
+    protected Vector2 mResultingAcc;
+    // Force accumulator to be applied to the next integration loop
+    protected Vector2 mForceAccum;
 
     /*
       Relative velocity.
@@ -29,7 +34,7 @@ public class Entity {
       same base, or relative, velocity.
      */
     protected Vector2 mRelativeVelocity;
-
+    
     // Image for this entity
     protected BufferedImage mImage;
 
@@ -44,7 +49,11 @@ public class Entity {
 
         mPosition = new Vector2();
         mVelocity = new Vector2();
-        mAcceleration = new Vector2();
+        mAcceleration = new Vector2(0.0, 10.0);
+	mResultingAcc = new Vector2();
+	mForceAccum = new Vector2();
+	
+	setInverseMass(0.0);
     }
 
     public void setWidth(int width) {
@@ -61,6 +70,18 @@ public class Entity {
 
     public int getHeight() {
         return mHeight;
+    }
+
+    public void setMass(double mass) {
+	mInverseMass = 1.0 / mass;
+    }
+
+    public void setInverseMass(double inverseMass) {
+	mInverseMass = inverseMass;
+    }
+
+    public double getMass() {
+	return 1.0 / mInverseMass;
     }
 
     public void setPosition(double x, double y) {
@@ -82,6 +103,15 @@ public class Entity {
         mAcceleration.y = y;
     }
 
+    public void addAcceleration(double x, double y) {
+	mAcceleration.x += x;
+	mAcceleration.y += y;
+    }
+
+    public void addForce(Vector2 force) {
+	mForceAccum.addVector(force);
+    }
+
     public void setRelativeVelocity(Vector2 v) {
 	mRelativeVelocity = v;
     }
@@ -101,14 +131,19 @@ public class Entity {
      * @param duration The duration of the frame
      */
     public void move(double duration) {
+	
+	mResultingAcc.addVector(mAcceleration);
+	mResultingAcc.addScaledVector(mForceAccum, mInverseMass);
+
         // Updates the position from the velocity
 	mPosition.x += (mVelocity.x - mRelativeVelocity.x) * duration;
-	mPosition.y += (mVelocity.y - mRelativeVelocity.y) * duration;
-	// mPosition.addScaledVector(mRelativeVelocity, duration);
-        // mPosition.addScaledVector(mVelocity, duration);
-	
+	mPosition.y += (mVelocity.y) * duration;
         // Updates the velocity from acceleration
-        mVelocity.addScaledVector(mAcceleration, duration);
+        mVelocity.addScaledVector(mResultingAcc, duration);
+
+	// Clear the accumulators
+	mForceAccum.clear();
+	mResultingAcc.clear();
     }
 
     /**

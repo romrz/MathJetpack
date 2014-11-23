@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable {
     private LinkedList<Entity> mEntities;
 
     // Player
-    private Player player;
+    private Player mPlayer;
 
     // The map of the game
     private Map mMap;
@@ -89,10 +89,10 @@ public class Game extends Canvas implements Runnable {
 
 	//Vector2 playerVelocity = new Vector2(50, 0);
 
-	player = new Player(mPlayerImage); // Creates the player
-	player.setVelocity(200, 0);
-	player.setRelativeVelocity(player.getVelocity());
-	addEntity(player); // Adds the player to the game entities
+	mPlayer = new Player(mPlayerImage); // Creates the player
+	mPlayer.setVelocity(200, 0);
+	mPlayer.setRelativeVelocity(mPlayer.getVelocity());
+	addEntity(mPlayer); // Adds the player to the game entities
 	
 	Entity q = new QuestionBox(mQuestionBoxImage);
 	Entity w = new Wall(mWallImage);
@@ -100,11 +100,11 @@ public class Game extends Canvas implements Runnable {
 	Entity c1 = new Coin(mCoinImage);
 	Entity c2 = new Coin(mCoinImage);
 
-	q.setRelativeVelocity(player.getVelocity());
-	w.setRelativeVelocity(player.getVelocity());
-	c.setRelativeVelocity(player.getVelocity());
-	c1.setRelativeVelocity(player.getVelocity());
-	c2.setRelativeVelocity(player.getVelocity());
+	q.setRelativeVelocity(mPlayer.getVelocity());
+	w.setRelativeVelocity(mPlayer.getVelocity());
+	c.setRelativeVelocity(mPlayer.getVelocity());
+	c1.setRelativeVelocity(mPlayer.getVelocity());
+	c2.setRelativeVelocity(mPlayer.getVelocity());
 
 	q.setPosition(2000, 350);
 	w.setPosition(3000, 350);
@@ -119,7 +119,7 @@ public class Game extends Canvas implements Runnable {
 	addEntity(c1);
 	addEntity(c2);
 
-        mMap = new Map(mWidth, mHeight, player.getVelocity());
+        mMap = new Map(mWidth, mHeight, mPlayer.getVelocity());
     }
 
     /**
@@ -139,8 +139,8 @@ public class Game extends Canvas implements Runnable {
 
 	try {
 
-	    // Player Image
-	    auxImage = ImageIO.read(Game.class.getResource("/entities/player.png"));
+	    // MPlayer Image
+	    auxImage = ImageIO.read(Game.class.getResource("/entities/player_spritesheet.png"));
 	    mPlayerImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
 	    g = (Graphics2D) mPlayerImage.createGraphics();
 	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
@@ -172,6 +172,10 @@ public class Game extends Canvas implements Runnable {
 	    System.out.println("Error while loading the images.");
 	}
 	
+    }
+
+    public Player getPlayer() {
+	return mPlayer;
     }
 
     /**

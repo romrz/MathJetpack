@@ -9,10 +9,11 @@ import mathjetpack.Vector2;
 public class AnimatedEntity extends Entity {
 
     /* Entity Animation */
-
-    private AnimationInfo mCurrentAnimation;
+    // Current animation
+    protected AnimationInfo mCurrentAnimation;
+    protected int mAnimationIndex;
+    // Animations fot this entity
     private ArrayList<AnimationInfo> mAnimations;
-    
     // Total frames of the sprite sheet image
     private int mFrames;
     // Columns on the sprite sheet
@@ -31,7 +32,6 @@ public class AnimatedEntity extends Entity {
 	
 	mFrames = 1;
 	mColumns = 1;
-
     }
 
     /**
@@ -48,7 +48,8 @@ public class AnimatedEntity extends Entity {
      * Sets the current animation
      */
     public void setAnimation(int a) {
-        mCurrentAnimation = mAnimations.get(a > 0 ? a - 1 : 0);
+	mAnimationIndex = a > 0 ? a - 1 : 0;
+        mCurrentAnimation = mAnimations.get(mAnimationIndex);
     }
 
     /**
@@ -98,6 +99,5 @@ public class AnimatedEntity extends Entity {
 
         g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, (int) mPosition.x + mWidth, (int) mPosition.y + mHeight,
 		    frameX, frameY, frameX + mWidth, frameY + mHeight, null);
-
     }
 }

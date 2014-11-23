@@ -15,6 +15,7 @@ public class QuestionBox extends AnimatedEntity {
 	setHeight(44);
 	//setPosition(400, 350);
 	setVelocity(0, 0);
+	setAcceleration(0, 0);
 
 	// Add animations
 	addAnimation(new AnimationInfo());

@@ -8,6 +8,8 @@ import mathjetpack.Vector2;
 
 public class Player extends AnimatedEntity {
     
+    private boolean thrusting = false;
+
     /**
      * Initializes the player's attributes
      */
@@ -15,14 +17,46 @@ public class Player extends AnimatedEntity {
 	super();
 
 	setImage(image);
-	setWidth(40);
-	setHeight(60);
+	setWidth(48);
+	setHeight(68);
+	setMass(20);
 	setPosition(100, 350);
 
 	// Add animations
-	addAnimation(new AnimationInfo());
-	setAnimation(1);
+	addAnimation(new AnimationInfo(0, 3, 1, 12, true));
+	addAnimation(new AnimationInfo(3, 2, 1, 6, true));
+	addAnimation(new AnimationInfo(6, 1, 1, 1, true));
+	addAnimation(new AnimationInfo(5, 1, 1, 1, true));
+	setAnimation(2);
 	
+	setColumns(3);
+	setImageFrames(7);
+    }
+
+    public void applyThrust() {
+	if(!thrusting) {
+
+	    setAnimation(2);
+
+	    if(mVelocity.y > 0)
+		addForce(new Vector2(0, -(getMass()  * ((mVelocity.y - mVelocity.y * 0.6) / 0.01))));
+
+	    setAcceleration(0, -600);
+	    thrusting = true;
+	}
+    }
+
+    public void removeThrust() {
+	setAnimation(3);
+	setAcceleration(0, 600);
+	thrusting = false;
+    }
+    
+    public void move(double duration) {
+	super.move(duration);
+
+	if(mVelocity.y > 0 && !thrusting && mAnimationIndex != 3)
+	    setAnimation(4);
     }
 
 }

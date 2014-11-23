@@ -8,7 +8,7 @@ public class AnimationInfo {
     // Total frames of the animation
     private int mFrames;
     // Current frame of the animation
-    private int mCurrentFrame = 0;
+    private int mCurrentFrame;
     // Animation direction. Forwards or backwards
     private int mAnimationDirection;
     // Animation looping
@@ -24,6 +24,8 @@ public class AnimationInfo {
         
     public AnimationInfo(int startFrame, int frames, int dir, int fps, boolean loop) {
 	
+	mCurrentFrame = startFrame;
+
 	setStartFrame(startFrame);
 	setFrames(frames);
 	setDirection(dir);
@@ -142,10 +144,10 @@ public class AnimationInfo {
 
 		mCurrentFrame += mAnimationDirection;
 
-		if(mAnimationDirection == 1 && mCurrentFrame > mFrames - 1)
-		    mCurrentFrame = 0;
-		if(mAnimationDirection == -1 && mCurrentFrame < 0)
-		    mCurrentFrame = mFrames - 1;
+		if(mAnimationDirection == 1 && mCurrentFrame > mStartFrame + mFrames - 1)
+		    mCurrentFrame = mStartFrame;
+		if(mAnimationDirection == -1 && mCurrentFrame < mStartFrame)
+		    mCurrentFrame = mStartFrame + mFrames - 1;
 
 	    }
 	}

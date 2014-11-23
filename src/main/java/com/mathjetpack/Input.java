@@ -23,6 +23,10 @@ public class Input implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
+	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+	    mGame.getPlayer().applyThrust();
+	}
+
     }
 
     @Override
@@ -33,6 +37,10 @@ public class Input implements KeyListener {
             mGame.toggleDebugInfo();
             System.out.println("KEY EVENT");
         }
+
+	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+	    mGame.getPlayer().removeThrust();
+	}
 
         // Exits the game
 

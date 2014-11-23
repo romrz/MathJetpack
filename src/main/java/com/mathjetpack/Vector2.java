@@ -17,6 +17,11 @@ public class Vector2 {
         this.y = y;
     }
 
+    public void clear() {
+	x = 0.0;
+	y = 0.0;
+    }
+
     /**
      * Adds a vector to this vector
      *
