@@ -9,6 +9,7 @@ import mathjetpack.Vector2;
 public class Player extends AnimatedEntity {
     
     private boolean thrusting = false;
+    private boolean running = false;
 
     /**
      * Initializes the player's attributes
@@ -42,6 +43,7 @@ public class Player extends AnimatedEntity {
 		addForce(new Vector2(0, -(getMass()  * ((mVelocity.y - mVelocity.y * 0.6) / 0.01))));
 
 	    setAcceleration(0, -600);
+	    running = false;
 	    thrusting = true;
 	}
     }
@@ -52,10 +54,15 @@ public class Player extends AnimatedEntity {
 	thrusting = false;
     }
     
+    public void running(boolean r) {
+	if((running = r) == true && !thrusting)
+	    setAnimation(1);
+    }
+
     public void move(double duration) {
 	super.move(duration);
 
-	if(mVelocity.y > 0 && !thrusting && mAnimationIndex != 3)
+	if(mVelocity.y > 0 && !thrusting && !running && mAnimationIndex != 3)
 	    setAnimation(4);
     }
 

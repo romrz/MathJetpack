@@ -1,7 +1,11 @@
-Interactive Math Game
-(In development)
+MathJetpack
+=====================
+
+MathJetpack is an interactive math game which intends to help children
+to enhance their abilities in math by playing and having fun.
 
 
-Run:
+Run
+---
 mvn package
 java -cp target/MathJetpack-1.0.jar mathjetpack.MathJetpack

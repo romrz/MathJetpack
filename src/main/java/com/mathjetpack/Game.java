@@ -233,6 +233,28 @@ public class Game extends Canvas implements Runnable {
      */
     public void quit() {}
 
+
+    public void collisionHandling() {
+    
+	for(Entity entity : mEntities) {
+	    if(entity.collidesWith(mPlayer))
+		entity.testCollition();
+	}
+
+	// Player and Map collision
+	if(mPlayer.getBottom() > mMap.getBottomBound()) {
+	    mPlayer.setBottom(mMap.getBottomBound());
+	    mPlayer.setVY(0);
+	    mPlayer.running(true);
+	}
+	else if(mPlayer.getTop() < mMap.getTopBound()) {
+	    mPlayer.setTop(mMap.getTopBound());
+	    mPlayer.setVY(0);
+	}
+
+    }
+
+
     /**
      * Updates the game world
      *
@@ -309,6 +331,8 @@ public class Game extends Canvas implements Runnable {
             updateGame(elapsed);
 	    t1e = System.nanoTime(); // Updating end
             
+	    collisionHandling();
+
 	    t2s = System.nanoTime(); // Rendering start
 	    render();
 	    t2e = System.nanoTime(); // Rendering end

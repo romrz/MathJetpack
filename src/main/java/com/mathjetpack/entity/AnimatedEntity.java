@@ -1,6 +1,7 @@
 package mathjetpack.entity;
 
 import java.awt.Graphics2D;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import mathjetpack.Vector2;
@@ -99,5 +100,11 @@ public class AnimatedEntity extends Entity {
 
         g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, (int) mPosition.x + mWidth, (int) mPosition.y + mHeight,
 		    frameX, frameY, frameX + mWidth, frameY + mHeight, null);
+
+	if(mTestCollition) {
+	    g.setColor(Color.WHITE);
+	    g.drawRect((int) mPosition.x, (int) mPosition.y, mWidth, mHeight);
+	}
+
     }
 }

@@ -18,6 +18,10 @@ public class Map {
     private int mHeight;
 
     // Map Bounds
+    private int mTopBound;
+    private int mBottomBound;
+
+    // Map Bounds
     private Rectangle mBounds;
 
     // Background Images
@@ -36,6 +40,9 @@ public class Map {
         mWidth = width;
         mHeight = height;
 	mBounds = new Rectangle(mWidth, mHeight - 80);
+
+	mTopBound = 10;
+	mBottomBound = mHeight - 75;
 
         mMapImages = new LinkedList<MapImage>();
 
@@ -109,6 +116,14 @@ public class Map {
 
     public final Rectangle getBounds() {
 	return mBounds;
+    }
+
+    public int getTopBound() {
+	return mTopBound;
+    }
+
+    public int getBottomBound() {
+	return mBottomBound;
     }
 
     /**
