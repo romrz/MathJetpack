@@ -38,11 +38,11 @@ public class Game extends Canvas implements Runnable {
       Entities' Images
       Only one image is used for all the entities of the same class
      */
-    private BufferedImage mPlayerImage;
-    private BufferedImage mWallImage;
-    private BufferedImage mCoinImage;
-    private BufferedImage mBirdImage;
-    private BufferedImage mQuestionBoxImage;
+    public static BufferedImage mPlayerImage;
+    public static BufferedImage mWallImage;
+    public static BufferedImage mCoinImage;
+    public static BufferedImage mBirdImage;
+    public static BufferedImage mQuestionBoxImage;
         
     // Frames per second
     private int mFrameRate;
@@ -119,7 +119,7 @@ public class Game extends Canvas implements Runnable {
 	addEntity(c1);
 	addEntity(c2);
 
-        mMap = new Map(mWidth, mHeight, mPlayer.getVelocity());
+        mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
     }
 
     /**

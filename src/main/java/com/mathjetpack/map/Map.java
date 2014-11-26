@@ -1,6 +1,7 @@
 package mathjetpack.map;
 
 import mathjetpack.Game;
+import mathjetpack.entity.EntitiesGenerator;
 import mathjetpack.Vector2;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,13 @@ public class Map {
     // Background Images
     private LinkedList<MapImage> mMapImages;
 
+    // Distance runned
+    private double mDistance;
+
+    private double mVelocity;
+
+    private EntitiesGenerator mGenerator;
+
     /**
      * Constructor.
      * Initialize the map and loads the Map Images
@@ -35,7 +43,7 @@ public class Map {
      * @param height
      * @param relativeVelocity Map's velocity
      */
-    public Map(int width, int height, Vector2 relativeVelocity) {
+    public Map(Game game, int width, int height, Vector2 relativeVelocity) {
 
         mWidth = width;
         mHeight = height;
@@ -47,6 +55,11 @@ public class Map {
         mMapImages = new LinkedList<MapImage>();
 
 	loadImages(relativeVelocity);
+	
+	mGenerator = new EntitiesGenerator(game, this);
+	
+	mDistance = 0.0;
+	mVelocity = relativeVelocity.x;
     }
 
     /**
@@ -134,6 +147,10 @@ public class Map {
         // Moves the Map Images
         for(MapImage image : mMapImages)
             image.move(duration);
+	
+	mDistance += mVelocity * duration;
+	
+	mGenerator.tick(mVelocity * duration);
 
     }
 
