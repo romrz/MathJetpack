@@ -1,6 +1,9 @@
 package mathjetpack.entity;
 
-
+/**
+ * This class holds the animation info for each animation
+ * of an animated entity
+ */
 public class AnimationInfo {
 
     // Start frame of the animation

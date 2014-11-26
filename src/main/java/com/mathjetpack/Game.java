@@ -6,12 +6,16 @@ import mathjetpack.entity.Player;
 import mathjetpack.entity.QuestionBox;
 import mathjetpack.entity.Wall;
 import mathjetpack.entity.Coin;
+import mathjetpack.images.Images;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.Dimension;
 import java.util.LinkedList;
 
 
@@ -33,16 +37,6 @@ public class Game extends Canvas implements Runnable {
     // Game states
     public static enum States {STARTING, STARTED, PLAYING, PAUSED};
     private States mState = States.STARTING;
-
-    /*
-      Entities' Images
-      Only one image is used for all the entities of the same class
-     */
-    public static BufferedImage mPlayerImage;
-    public static BufferedImage mWallImage;
-    public static BufferedImage mCoinImage;
-    public static BufferedImage mBirdImage;
-    public static BufferedImage mQuestionBoxImage;
         
     // Frames per second
     private int mFrameRate;
@@ -75,8 +69,7 @@ public class Game extends Canvas implements Runnable {
         addKeyListener(new Input(this));
 
         mEntities = new LinkedList<Entity>();
-
-	// Prepares the game
+	
         init();
     }
 
@@ -84,94 +77,13 @@ public class Game extends Canvas implements Runnable {
      * Prepares the game to start
      */
     public void init() {
-	// Loads the images
-	loadImages();
 
-	//Vector2 playerVelocity = new Vector2(50, 0);
-
-	mPlayer = new Player(mPlayerImage); // Creates the player
+	mPlayer = new Player(Images.getImage("/entities/player_spritesheet.png")); // Creates the player
 	mPlayer.setVelocity(200, 0);
 	mPlayer.setRelativeVelocity(mPlayer.getVelocity());
 	addEntity(mPlayer); // Adds the player to the game entities
-	
-	Entity q = new QuestionBox(mQuestionBoxImage);
-	Entity w = new Wall(mWallImage);
-	Entity c = new Coin(mCoinImage);
-	Entity c1 = new Coin(mCoinImage);
-	Entity c2 = new Coin(mCoinImage);
-
-	q.setRelativeVelocity(mPlayer.getVelocity());
-	w.setRelativeVelocity(mPlayer.getVelocity());
-	c.setRelativeVelocity(mPlayer.getVelocity());
-	c1.setRelativeVelocity(mPlayer.getVelocity());
-	c2.setRelativeVelocity(mPlayer.getVelocity());
-
-	q.setPosition(2000, 350);
-	w.setPosition(3000, 350);
-	c.setPosition(1000, 350);
-	c1.setPosition(1040, 350);
-	c2.setPosition(1080, 350);
-
-
-	addEntity(q);
-	addEntity(w);
-	addEntity(c);
-	addEntity(c1);
-	addEntity(c2);
 
         mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
-    }
-
-    /**
-     * Loads the images used in the game
-     */
-    private void loadImages() {
-
-	/*
-	  Creates compatible images
-	 */
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	GraphicsDevice gd = ge.getDefaultScreenDevice();
-	GraphicsConfiguration gc = gd.getDefaultConfiguration();
-
-	BufferedImage auxImage = null;
-	Graphics2D g = null;
-
-	try {
-
-	    // MPlayer Image
-	    auxImage = ImageIO.read(Game.class.getResource("/entities/player_spritesheet.png"));
-	    mPlayerImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
-	    g = (Graphics2D) mPlayerImage.createGraphics();
-	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
-	    g.dispose();
-
-	    // Wall Image
-	    auxImage = ImageIO.read(Game.class.getResource("/entities/wall.png"));
-	    mWallImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
-	    g = (Graphics2D) mWallImage.createGraphics();
-	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
-	    g.dispose();
-	    
-	    // Coin Image 
-	    auxImage = ImageIO.read(Game.class.getResource("/entities/coin.png"));
-	    mCoinImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
-	    g = (Graphics2D) mCoinImage.createGraphics();
-	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
-	    g.dispose();
-
-	    // Question Box Image
-	    auxImage = ImageIO.read(Game.class.getResource("/entities/question_box.png"));
-	    mQuestionBoxImage = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
-	    g = (Graphics2D) mQuestionBoxImage.createGraphics();
-	    g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
-	    g.dispose();
-
-	}
-	catch(Exception e) {
-	    System.out.println("Error while loading the images.");
-	}
-	
     }
 
     public Player getPlayer() {
@@ -234,11 +146,15 @@ public class Game extends Canvas implements Runnable {
     public void quit() {}
 
 
+    /**
+     * Checks and handles the collision between entities
+     */
     public void collisionHandling() {
     
+	// Checks collisions
 	for(Entity entity : mEntities) {
 	    if(entity.collidesWith(mPlayer))
-		entity.testCollition();
+		entity.testCollition(); // Prints a rectangle around the entity
 	}
 
 	// Player and Map collision

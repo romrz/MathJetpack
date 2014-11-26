@@ -2,11 +2,11 @@ package mathjetpack.map;
 
 import mathjetpack.Game;
 import mathjetpack.entity.EntitiesGenerator;
+import mathjetpack.images.Images;
 import mathjetpack.Vector2;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 
 /**
@@ -69,45 +69,39 @@ public class Map {
     private void loadImages(Vector2 relativeVelocity) {
 	
 	MapImage image; // Auxiliary Image to load the images
+        
+	// Loads the Clouds Image
+	image = new MapImage(this);
+	image.setWidth(50);
+	image.setHeight(640);
+	image.setPosition(0, 0);
+	image.setVelocity(0, 0);
+	image.setRelativeVelocity(new Vector2());
+	image.repeatX(true);
+	image.setImage(Images.getImage("/map/sky_r.png"));
+	mMapImages.add(image);
 
-        try {
-            // Loads the Clouds Image
-	    image = new MapImage(this);
-            image.setWidth(50);
-            image.setHeight(640);
-            image.setPosition(0, 0);
-            image.setVelocity(0, 0);
-	    image.setRelativeVelocity(new Vector2());
-            image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/sky_r.png")));
-            mMapImages.add(image);
+	// Loads the Mountains Image
+	image = new MapImage(this);
+	image.setWidth(528);
+	image.setHeight(192);
+	image.setPosition(0, 368);
+	image.setVelocity(relativeVelocity.x * 0.9, 0);
+	image.setRelativeVelocity(relativeVelocity);
+	image.repeatX(true);
+	image.setImage(Images.getImage("/map/mountains_r.png"));
+	mMapImages.add(image);
 
-            // Loads the Mountains Image
-            image = new MapImage(this);
-            image.setWidth(528);
-            image.setHeight(192);
-            image.setPosition(0, 368);
-            image.setVelocity(relativeVelocity.x * 0.9, 0);
-	    image.setRelativeVelocity(relativeVelocity);
-            image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/mountains_r.png")));
-            mMapImages.add(image);
-
-            // Loads the Floor Image
-            image = new MapImage(this);
-            image.setWidth(65);
-            image.setHeight(80);
-            image.setPosition(0, 560);
-            image.setVelocity(0, 0);
-	    image.setRelativeVelocity(relativeVelocity);
-            image.repeatX(true);
-            image.setImage(ImageIO.read(Map.class.getResource("/map/grass_r.png")));
-            mMapImages.add(image);
-
-        }
-        catch (Exception e) {
-            System.out.println("Error while loading Map Images");
-        }
+	// Loads the Floor Image
+	image = new MapImage(this);
+	image.setWidth(65);
+	image.setHeight(80);
+	image.setPosition(0, 560);
+	image.setVelocity(0, 0);
+	image.setRelativeVelocity(relativeVelocity);
+	image.repeatX(true);
+	image.setImage(Images.getImage("/map/grass_r.png"));
+	mMapImages.add(image);
 
     }
 

@@ -43,10 +43,9 @@ public class Entity {
     protected boolean mCollidable;
     protected boolean mVisible;
     protected boolean mAlive;
-
-
+    
+    // Test collition
     protected boolean mTestCollition = false;
-
 
     /**
      * Constructor.
@@ -216,13 +215,10 @@ public class Entity {
 	    && this != e;
     }
 
-
     public void testCollition() {
 	mTestCollition = true;
     }
     
-
-
     /**
      * Integrates the entity in time by the given amount.
      * This method uses the Euler integration method
