@@ -22,7 +22,7 @@ public class Player extends AnimatedEntity {
 	setHeight(68);
 	setMass(20);
 	setPosition(100, 350);
-
+	
 	// Add animations
 	addAnimation(new AnimationInfo(0, 3, 1, 12, true));
 	addAnimation(new AnimationInfo(3, 2, 1, 6, true));

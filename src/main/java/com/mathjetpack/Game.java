@@ -17,6 +17,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 
 public class Game extends Canvas implements Runnable {
@@ -151,10 +152,18 @@ public class Game extends Canvas implements Runnable {
      */
     public void collisionHandling() {
     
-	// Checks collisions
-	for(Entity entity : mEntities) {
+	// Iterates through the list
+	Entity entity = null;
+	ListIterator<Entity> it = mEntities.listIterator();
+	while(it.hasNext()) {
+	    entity = it.next();
+
 	    if(entity.collidesWith(mPlayer))
 		entity.testCollition(); // Prints a rectangle around the entity
+	    
+	    // Checks if the entity has passed the screen
+	    if(entity.getRight() < 0)
+		it.remove(); // Removes the entity from the list
 	}
 
 	// Player and Map collision

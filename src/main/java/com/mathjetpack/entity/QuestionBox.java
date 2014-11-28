@@ -1,5 +1,7 @@
 package mathjetpack.entity;
 
+import mathjetpack.images.Images;
+
 import java.awt.image.BufferedImage;
 
 public class QuestionBox extends AnimatedEntity {
@@ -7,16 +9,13 @@ public class QuestionBox extends AnimatedEntity {
     /**
      * Initializes the QuestionBox
      */
-    public QuestionBox(BufferedImage image) {
+    public QuestionBox() {
 	super();
 
-	setImage(image);
+	setImage(Images.getImage("/entities/question_box.png"));
 	setWidth(44);
 	setHeight(44);
-	//setPosition(400, 350);
-	setVelocity(0, 0);
-	setAcceleration(0, 0);
-
+	
 	// Add animations
 	addAnimation(new AnimationInfo());
 	setAnimation(1);

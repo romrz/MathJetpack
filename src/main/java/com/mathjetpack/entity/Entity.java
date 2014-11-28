@@ -58,7 +58,7 @@ public class Entity {
 
         mPosition = new Vector2();
         mVelocity = new Vector2();
-        mAcceleration = new Vector2(0.0, 10.0);
+        mAcceleration = new Vector2();
 	mResultingAcc = new Vector2();
 	mForceAccum = new Vector2();
 	

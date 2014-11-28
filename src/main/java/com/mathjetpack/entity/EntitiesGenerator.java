@@ -2,7 +2,6 @@ package mathjetpack.entity;
 
 import mathjetpack.Game;
 import mathjetpack.map.Map;
-import mathjetpack.images.Images;
 
 import java.util.Random;
 
@@ -14,55 +13,79 @@ public class EntitiesGenerator {
     protected Game mGame;
     protected Map mMap;
 
-    protected double x;
+    protected double next;
 
-    protected Random r;
+    protected Random rand;
 
     public EntitiesGenerator(Game game, Map map) {
 	mGame = game;
 	mMap = map;
 
-	x = 0;
+	next = 1000;
 	
-	r = new Random();
+	rand = new Random();
     }
 
-    public void tick(double distance) {
-	x -= distance;
-    
-	if(x <= 0) {
-	    generate(r.nextInt(3) + 1);
+    public void update() {
+	if(mMap.getX() >= next) {
+	    generate(rand.nextInt(3) + 1);
 	}
     }
    
     /**
      * Generates one coin 1000 pixels ahead form the player
      */
-    public void generateCoins() {
-	Entity e = new Coin(Images.getImage("/entities/coin.png"));
+    public int generateCoins() {
+	
+	Entity e = new Coin();
+	
+	int c = rand.nextInt(6) + 1;
+	int r = rand.nextInt(c) + 1;
+
+	int w = e.getWidth();
+	int h = e.getHeight();
+	
+	int y = rand.nextInt(mMap.getBottomBound() - r * h);
+	int x = 1000;
+
 	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
-	e.setPosition(1000, r.nextInt(mMap.getBottomBound()));
+	e.setPosition(x, y);
 	mGame.addEntity(e);
+
+	for(int i = 0; i < r; i++) {
+	    for(int j = 0; j < c; j++) {
+		e = new Coin();
+		e.setRelativeVelocity(mGame.getPlayer().getVelocity());
+		e.setPosition(x + w * j, y + h * i);
+		mGame.addEntity(e);
+	    }
+	}
+
+	return w * c;
     }
 
     /**
      * Generates one question box 1000 pixels ahead form the player
      */
-    public void generateQuestionBox() {
-	Entity e = new QuestionBox(Images.getImage("/entities/question_box.png"));
+    public int generateQuestionBox() {
+	Entity e = new QuestionBox();
 	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
-	e.setPosition(1000, r.nextInt(mMap.getBottomBound()));
+	e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
 	mGame.addEntity(e);
+	
+	return e.getWidth();
     }
 
     /**
      * Generates one wall 1000 pixels ahead form the player
      */
-    public void generateWall() {
-	Entity e = new Wall(Images.getImage("/entities/wall.png"));
+    public int generateWall() {
+	Entity e = new Wall(rand.nextInt(10) + 1);
 	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
 	e.setPosition(1000, mMap.getBottomBound() - e.getHeight());
 	mGame.addEntity(e);
+
+	return e.getWidth();
     }
 
     /**
@@ -70,12 +93,11 @@ public class EntitiesGenerator {
      */
     public void generate(int i) {
 	
-	if(i == 1) generateCoins();
-	else if(i == 2) generateQuestionBox();
-	else if(i == 3) generateWall();
+	if(i == 1) next += generateCoins();
+	else if(i == 2) next += generateQuestionBox();
+	else if(i == 3) next += generateWall();
 
-	x += 400;
-
+	next += 400;
     }
 
 }

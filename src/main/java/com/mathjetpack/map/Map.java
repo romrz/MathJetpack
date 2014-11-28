@@ -28,9 +28,7 @@ public class Map {
     // Background Images
     private LinkedList<MapImage> mMapImages;
 
-    // Distance runned
-    private double mDistance;
-
+    private double mPosition;
     private double mVelocity;
 
     private EntitiesGenerator mGenerator;
@@ -58,7 +56,7 @@ public class Map {
 	
 	mGenerator = new EntitiesGenerator(game, this);
 	
-	mDistance = 0.0;
+	mPosition = 0.0;
 	mVelocity = relativeVelocity.x;
     }
 
@@ -133,6 +131,10 @@ public class Map {
 	return mBottomBound;
     }
 
+    public double getX() {
+	return mPosition;
+    }
+
     /**
      * Moves the map
      */
@@ -142,9 +144,9 @@ public class Map {
         for(MapImage image : mMapImages)
             image.move(duration);
 	
-	mDistance += mVelocity * duration;
-	
-	mGenerator.tick(mVelocity * duration);
+	mPosition += mVelocity * duration;
+
+	mGenerator.update();
 
     }
 
