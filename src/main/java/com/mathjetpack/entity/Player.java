@@ -7,6 +7,9 @@ import javax.imageio.ImageIO;
 import mathjetpack.Vector2;
 
 public class Player extends AnimatedEntity {
+
+    private int mCoins;
+    private int mPoints;
     
     private boolean thrusting = false;
     private boolean running = false;
@@ -21,20 +24,57 @@ public class Player extends AnimatedEntity {
 	setWidth(48);
 	setHeight(68);
 	setMass(20);
-	setPosition(100, 350);
-	
+	setType(Entity.Type.PLAYER);
+		
 	// Add animations
 	addAnimation(new AnimationInfo(0, 3, 1, 12, true));
 	addAnimation(new AnimationInfo(3, 2, 1, 6, true));
 	addAnimation(new AnimationInfo(6, 1, 1, 1, true));
 	addAnimation(new AnimationInfo(5, 1, 1, 1, true));
-	setAnimation(2);
 	
 	setColumns(3);
 	setImageFrames(7);
+
+	reset();
+    }
+
+    public void setCoins(int coins) {
+	mCoins = coins;
+    }
+
+    public void addCoin() {
+	mCoins++;
+    }
+
+    public int getCoins() {
+	return mCoins;
+    }
+
+    public void setPoints(int points) {
+	mPoints = points;
+    }
+
+    public void addPoint() {
+	mPoints++;
+    }
+
+    public int getPoints() {
+	return mPoints;
+    }    
+
+    public void reset() {
+	setPosition(100, 350);
+	setVelocity(200, 0);
+	running = false;
+	mPoints = 0;
+	mCoins = 0;
+	removeThrust();
     }
 
     public void applyThrust() {
+
+	//mSound.play("jetpack");
+
 	if(!thrusting) {
 
 	    setAnimation(2);

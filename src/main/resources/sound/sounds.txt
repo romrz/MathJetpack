@@ -1,0 +1,9 @@
+coin /sound/coin.wav 10
+hurt /sound/hurt.wav 1
+jetpack /sound/jetpack.wav 1
+question /sound/question.wav 1
+correct /sound/correct.wav 1
+wrong /sound/wrong.wav 1
+select /sound/select.wav 1
+run /sound/run.wav 1
+background /sound/background.wav 1

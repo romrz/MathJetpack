@@ -26,7 +26,13 @@ public class EntitiesGenerator {
 	rand = new Random();
     }
 
+    public void reset() {
+	next = 1000;
+    }
+
     public void update() {
+	if(mGame.getState() != Game.States.PLAYING) return;
+
 	if(mMap.getX() >= next) {
 	    generate(rand.nextInt(3) + 1);
 	}
@@ -54,6 +60,8 @@ public class EntitiesGenerator {
 
 	for(int i = 0; i < r; i++) {
 	    for(int j = 0; j < c; j++) {
+		if(i == 0 && j == 0) continue;
+
 		e = new Coin();
 		e.setRelativeVelocity(mGame.getPlayer().getVelocity());
 		e.setPosition(x + w * j, y + h * i);

@@ -135,6 +135,11 @@ public class Map {
 	return mPosition;
     }
 
+    public void reset() {
+	mPosition = 0;
+	mGenerator.reset();
+    }
+
     /**
      * Moves the map
      */

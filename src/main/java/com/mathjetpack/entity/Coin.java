@@ -15,6 +15,7 @@ public class Coin extends AnimatedEntity {
 	setImage(Images.getImage("/entities/coin.png"));
 	setWidth(30);
 	setHeight(33);
+	setType(Entity.Type.COIN);
 
 	// Set animations	
 	setImageFrames(3);

@@ -19,6 +19,7 @@ public class Wall extends Entity {
 	super();
 
 	setImage(Images.getImage("/entities/wall.png"));
+	setType(Entity.Type.WALL);
 
 	mBricks = bricks;
 	mBrickHeight = 38;

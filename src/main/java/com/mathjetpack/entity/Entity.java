@@ -40,6 +40,9 @@ public class Entity {
     // Image for this entity
     protected BufferedImage mImage;
 
+    public static enum Type {PLAYER, WALL, QBOX, COIN};
+    protected Type mType;
+
     protected boolean mCollidable;
     protected boolean mVisible;
     protected boolean mAlive;
@@ -183,6 +186,14 @@ public class Entity {
 
     public BufferedImage getImage() {
         return mImage;
+    }
+
+    public void setType(Type type) {
+	mType = type;
+    }
+
+    public Type getType() {
+	return mType;
     }
 
     public void setCollidable(boolean collidable) {
