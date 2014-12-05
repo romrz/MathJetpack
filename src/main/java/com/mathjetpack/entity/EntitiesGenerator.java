@@ -2,6 +2,7 @@ package mathjetpack.entity;
 
 import mathjetpack.Game;
 import mathjetpack.map.Map;
+import mathjetpack.Vector2;
 
 import java.util.Random;
 
@@ -76,11 +77,31 @@ public class EntitiesGenerator {
      * Generates one question box 1000 pixels ahead form the player
      */
     public int generateQuestionBox() {
-	Entity e = new QuestionBox();
-	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
+
+	Vector2 relVel = mGame.getPlayer().getVelocity();
+
+	QuestionBox e = new QuestionBox();
+	e.setRelativeVelocity(relVel);
 	e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
-	mGame.addEntity(e);
+
+
+	Question question = new Question("¿ 2 x 3 - 5 ?");
+	question.setVelocity(relVel.x, relVel.y);
+	question.setPosition(mGame.getWidth() / 4, 20);
+
+	Option option = null;
+	for(int i = 1; i <= 3; i++) {
+	    option = new Option("" + i);
+	    option.setPosition(mGame.getWidth() - option.getWidth() - 20, (i) * mGame.getHeight() / 5);
+	    option.setRelativeVelocity(relVel);
+	    option.setCorrect(i == 1);
+
+	    question.addOption(option);
+	}
 	
+	e.setQuestion(question);
+
+	mGame.addEntity(e);
 	return e.getWidth();
     }
 

@@ -4,6 +4,8 @@ import mathjetpack.map.Map;
 import mathjetpack.entity.Entity;
 import mathjetpack.entity.Player;
 import mathjetpack.entity.QuestionBox;
+import mathjetpack.entity.Question;
+import mathjetpack.entity.Option;
 import mathjetpack.entity.Wall;
 import mathjetpack.entity.Coin;
 import mathjetpack.images.Images;
@@ -46,6 +48,9 @@ public class Game extends Canvas implements Runnable {
     private HashMap<String, Menu> mMenus;
     private Menu mCurrentMenu;
     private Button mPauseButton;
+
+    // Current Question
+    private Question mCurrentQuestion;
 
     // HUD
     private HUD mHUD;
@@ -191,6 +196,10 @@ public class Game extends Canvas implements Runnable {
         mRunning = running;
     }
 
+    public boolean isInQuestion() {
+	return mCurrentQuestion != null;
+    }
+
     /**
      * Adds a entity to the game
      *
@@ -277,11 +286,16 @@ public class Game extends Canvas implements Runnable {
 		}
 		else if(entity.getType() == Entity.Type.QBOX) {
 		    mSound.play("question");
+		    
+		    mCurrentQuestion = ((QuestionBox) entity).getQuestion();
+		    
 		    entity.setAlive(false);
-		    mPlayer.addPoint();
+		    //mPlayer.addPoint();
 		}
-
 	    }
+
+	    if(entity.getType() == Entity.Type.QBOX && mCurrentQuestion != null)
+		entity.setAlive(false);
 
 	    // Checks if the entity has passed the screen
 	    if(entity.getRight() < 0)
@@ -289,6 +303,20 @@ public class Game extends Canvas implements Runnable {
 
 	    if(!entity.isAlive()) it.remove();
 
+	}
+
+	if(mCurrentQuestion != null && !mCurrentQuestion.isAnswered()) {
+	    mCurrentQuestion.checkCollision(mPlayer);
+	    if(mCurrentQuestion.getState() == Question.State.CORRECT) {
+		mSound.play("correct");
+		mPlayer.addPoint();
+		mCurrentQuestion = null;
+	    }
+	    else if(mCurrentQuestion.getState() == Question.State.WRONG) {
+		mSound.play("wrong");
+		gameOver();
+		mCurrentQuestion = null;
+	    }
 	}
 
 	// Player and Map collision
@@ -320,6 +348,9 @@ public class Game extends Canvas implements Runnable {
         // Moves the entities
         for(Entity entity : mEntities)
             entity.move(duration);
+
+	if(mCurrentQuestion != null)
+	    mCurrentQuestion.move(duration);
 
     }
 
@@ -353,6 +384,9 @@ public class Game extends Canvas implements Runnable {
 	    // Draws the HUD
 	    mHUD.draw(g);
 	}
+
+	if(mCurrentQuestion != null)
+	    mCurrentQuestion.draw(g);
 
         // Shows the info related to the game for debugging purposes
         if(mShowInfo)
@@ -450,6 +484,7 @@ public class Game extends Canvas implements Runnable {
         int vstart = 25;
         int i = 1;
 
+	g.setFont(null);
         g.setColor(Color.BLACK);
         g.drawString("Press D to show/hide the debugging information", 10, vstart);
         g.drawString("FPS: " + mFrameRate, 10, vspace * i++ + vstart);

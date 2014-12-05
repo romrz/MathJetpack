@@ -136,6 +136,18 @@ public class Entity {
         mPosition.x = x;
         mPosition.y = y;
     }
+    
+    public void setX(double x) {
+	mPosition.x = x;
+    }
+    
+    public void setY(double y) {
+	mPosition.y = y;
+    }
+
+    public final Vector2 getPosition() {
+	return mPosition;
+    }
 
     public void setVelocity(double x, double y) {
         mVelocity.x = x;
@@ -258,8 +270,8 @@ public class Entity {
      * @param g The graphics onto which to draw the entity
      */
     public void draw(Graphics2D g) {
-
-	g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
+	if(mImage != null)
+	    g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
 
 	if(mTestCollition) {
 	    g.setColor(Color.WHITE);
