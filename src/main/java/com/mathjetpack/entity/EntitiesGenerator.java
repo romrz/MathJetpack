@@ -14,8 +14,10 @@ public class EntitiesGenerator {
     protected Game mGame;
     protected Map mMap;
 
+    // The next position where a new entity is going to be generated
     protected double next;
 
+    // A random Object useful throughout the class
     protected Random rand;
 
     public EntitiesGenerator(Game game, Map map) {
@@ -27,10 +29,17 @@ public class EntitiesGenerator {
 	rand = new Random();
     }
 
-    public void reset() {
+    /**
+     * Resets the entities generator
+     */
+     public void reset() {
 	next = 1000;
     }
 
+    /**
+     * Checks the map position. If it's greater than the next
+     * position, generates a new entity randomly
+     */
     public void update() {
 	if(mGame.getState() != Game.States.PLAYING) return;
 
@@ -41,6 +50,8 @@ public class EntitiesGenerator {
    
     /**
      * Generates one coin 1000 pixels ahead form the player
+     * 
+     * @return The width of the generated entities
      */
     public int generateCoins() {
 	
@@ -59,6 +70,7 @@ public class EntitiesGenerator {
 	e.setPosition(x, y);
 	mGame.addEntity(e);
 
+	// Generates a group of coins
 	for(int i = 0; i < r; i++) {
 	    for(int j = 0; j < c; j++) {
 		if(i == 0 && j == 0) continue;
@@ -75,6 +87,8 @@ public class EntitiesGenerator {
 
     /**
      * Generates one question box 1000 pixels ahead form the player
+     *
+     * @return The width of the generated entities
      */
     public int generateQuestionBox() {
 
@@ -83,7 +97,6 @@ public class EntitiesGenerator {
 	QuestionBox e = new QuestionBox();
 	e.setRelativeVelocity(relVel);
 	e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
-
 
 	Question question = new Question("¿ 2 x 3 - 5 ?");
 	question.setVelocity(relVel.x, relVel.y);
@@ -107,6 +120,8 @@ public class EntitiesGenerator {
 
     /**
      * Generates one wall 1000 pixels ahead form the player
+     *
+     * @return The width of the generated entities 
      */
     public int generateWall() {
 	Entity e = new Wall(rand.nextInt(10) + 1);
@@ -128,5 +143,4 @@ public class EntitiesGenerator {
 
 	next += 400;
     }
-
 }

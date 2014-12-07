@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
+
 public class Sound {
     
     private HashMap<String, Clip[]> mSounds;
@@ -56,9 +57,9 @@ public class Sound {
 	play(sound, false);
     }    
 
-    public void play(String sound, boolean loop) {
+    public void play(String sound, final boolean loop) {
 	
-	Clip clips[] = mSounds.get(sound);
+	final Clip clips[] = mSounds.get(sound);
 
 	for(Clip clip : clips) {
 	    if(!clip.isRunning()) {
@@ -67,7 +68,7 @@ public class Sound {
 		    clip.loop(Clip.LOOP_CONTINUOUSLY);
 		else
 		    clip.start();
-		
+		    
 		break;
 	    }
 	}

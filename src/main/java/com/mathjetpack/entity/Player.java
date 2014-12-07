@@ -7,8 +7,10 @@ import javax.imageio.ImageIO;
 import mathjetpack.Vector2;
 
 public class Player extends AnimatedEntity {
-
+    
+    // Coins taken
     private int mCoins;
+    // Points made
     private int mPoints;
     
     private boolean thrusting = false;
@@ -62,6 +64,10 @@ public class Player extends AnimatedEntity {
 	return mPoints;
     }    
 
+    /**
+     * Resets the position, coins, points
+     * and the state of the player
+     */
     public void reset() {
 	setPosition(100, 350);
 	setVelocity(200, 0);
@@ -71,16 +77,20 @@ public class Player extends AnimatedEntity {
 	removeThrust();
     }
 
+    /**
+     * Apply thrust to the jetpack and changes the animation
+     */
     public void applyThrust() {
-
-	//mSound.play("jetpack");
-
 	if(!thrusting) {
 
 	    setAnimation(2);
 
+	    // If the player is falling and then apply thrust, a big force is applied
+	    // to slow down the player. It makes the game more playable. Otherwise
+	    // it would take much longer to slow the player
 	    if(mVelocity.y > 0)
-		addForce(new Vector2(0, -(getMass()  * ((mVelocity.y - mVelocity.y * 0.6) / 0.01))));
+		mVelocity.y -= mVelocity.y * 0.5;
+		//addForce(new Vector2(0, -(getMass()  * ((mVelocity.y - mVelocity.y * 0.6) / 0.01))));
 
 	    setAcceleration(0, -600);
 	    running = false;
@@ -88,22 +98,31 @@ public class Player extends AnimatedEntity {
 	}
     }
 
+    /**
+     * Removes the thrust and changes the animation
+     */
     public void removeThrust() {
 	setAnimation(3);
 	setAcceleration(0, 600);
 	thrusting = false;
     }
     
+    /**
+     * Sets whether the player is running or not
+     * and changes the animation
+     */
     public void running(boolean r) {
 	if((running = r) == true && !thrusting)
 	    setAnimation(1);
     }
 
+    /**
+     * Updates the player's position
+     */
     public void move(double duration) {
 	super.move(duration);
 
 	if(mVelocity.y > 0 && !thrusting && !running && mAnimationIndex != 3)
 	    setAnimation(4);
     }
-
 }

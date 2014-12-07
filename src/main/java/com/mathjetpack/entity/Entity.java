@@ -162,12 +162,12 @@ public class Entity {
 	mVelocity.x = vx;
     }
 
-    public double getVY() {
-	return mVelocity.y;
-    }
-
     public double getVX() {
 	return mVelocity.x;
+    }
+
+    public double getVY() {
+	return mVelocity.y;
     }
 
     public final Vector2 getVelocity() {
@@ -232,6 +232,11 @@ public class Entity {
 	return mAlive;
     }
 
+    /**
+     * Checks if this entity collides with another entity
+     *
+     * @param e The entity to check if this entity collides with 
+     */
     public boolean collidesWith(Entity e) {
 	return getRight() > e.getLeft() && getLeft() < e.getRight()
 	    && getBottom() > e.getTop() && getTop() < e.getBottom()
@@ -250,6 +255,7 @@ public class Entity {
      */
     public void move(double duration) {
 	
+	// Gets the acceleration applied to this entity in this frame
 	mResultingAcc.addVector(mAcceleration);
 	mResultingAcc.addScaledVector(mForceAccum, mInverseMass);
 
@@ -273,6 +279,7 @@ public class Entity {
 	if(mImage != null)
 	    g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
 
+	// Draws a rectangle around the entity to see clearly when it collided
 	if(mTestCollition) {
 	    g.setColor(Color.WHITE);
 	    g.drawRect((int) mPosition.x, (int) mPosition.y, mWidth, mHeight);

@@ -11,7 +11,8 @@ import java.awt.geom.Rectangle2D;
  * This class implements the functionality of a button
  */
 public class Button {
-    
+
+    // Text of the button
     private String mText;
     
     private BufferedImage mBackgroundImage;
@@ -63,13 +64,18 @@ public class Button {
 	mPosition.y = y;
     }
 
-    // Checks if the button was pressed
+    /**
+     * Checks if the button was pressed
+     */
     public boolean isPressed(int x, int y) {
         return x >= mPosition.x - mWidth / 2 && x <= mPosition.x + mWidth / 2
 	    && y >= mPosition.y - mHeight / 2 && y <= mPosition.y + mHeight / 2;
     }
 
-    // Draws the button
+    /**
+     * Draws the button.
+     * Draws the text centered.
+     */
     public void draw(Graphics2D g) {
         int x = (int) mPosition.x - mWidth / 2;
         int y = (int) mPosition.y - mHeight / 2;
@@ -77,7 +83,6 @@ public class Button {
         g.setColor(Color.RED);
         g.fillRect(x, y, mWidth, mHeight);
      
-
 	Rectangle2D rect = g.getFontMetrics().getStringBounds(mText, g);
 	
 	x = (int) (mPosition.x - rect.getWidth() / 2);

@@ -6,11 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Option extends AnimatedEntity {
 
+public class Option extends AnimatedEntity {
+    
+    // The option
     private String mText;
+    
     private boolean mCorrect;    
 
+    // Text dimensions. Usefuls when painting the text
     private int mTextWidth;
     private int mTextHeight;
 

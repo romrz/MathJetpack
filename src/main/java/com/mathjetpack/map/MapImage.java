@@ -2,14 +2,12 @@ package mathjetpack.map;
 
 import mathjetpack.entity.Entity;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 
-/**
- * Created by rom on 20/10/14.
- */
+
 public class MapImage extends Entity {
 
-    // The map to which this image belongs to
+    // The map this image belongs to
     private Map mMap;
 
     /*
@@ -77,7 +75,5 @@ public class MapImage extends Entity {
         }
         else
             g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, null);
-
     }
-
 }

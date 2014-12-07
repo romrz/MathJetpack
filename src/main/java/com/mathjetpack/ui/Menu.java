@@ -15,9 +15,11 @@ public class Menu {
 
     protected Game mGame;
 
-    protected BufferedImage mBackgroundImage; // Background Image (optional)
+    // Background Image (optional)
+    protected BufferedImage mBackgroundImage;
 
-    private LinkedList<Button> mButtons; // Menu Buttons
+    // Menu Buttons
+    private LinkedList<Button> mButtons;
 
     protected Vector2 mPosition;
 
@@ -54,6 +56,11 @@ public class Menu {
 	mHeight = h;
     }
 
+    /**
+     * Adds a Button to this menu and adjust
+     * the existing buttons to have all an equal
+     * width an height
+     */
     public void addButton(Button btn) {
 	mButtons.add(btn);
 	btn.setWidth(mWidth - 2 * mMargin);
@@ -68,9 +75,10 @@ public class Menu {
 	}
     }
 
-    // Handles the user input on this menu
+    /**
+     * Handles the user input on this menu
+     */
     public void inputHandling(MouseEvent e) {
-        
         for (Button b : mButtons) {
 	    if(b.isPressed(e.getX(), e.getY())) {
 		
@@ -87,7 +95,6 @@ public class Menu {
         }
     }
 
-    // Draws the menu
     public void draw(Graphics2D g) {
         if(mBackgroundImage != null) {
             g.drawImage(mBackgroundImage, (int) mPosition.x - mWidth / 2, (int) mPosition.y - mHeight / 2, mWidth, mHeight, null);

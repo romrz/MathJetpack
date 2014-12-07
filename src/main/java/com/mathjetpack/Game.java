@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
     private int mWidth;
     private int mHeight;
 
-    // Game entities
+    // Game entities list
     private LinkedList<Entity> mEntities;
 
     // Player
@@ -49,13 +49,18 @@ public class Game extends Canvas implements Runnable {
     private Menu mCurrentMenu;
     private Button mPauseButton;
 
-    // Current Question
+    // Current Question. If it's not null then it's shown on screen
     private Question mCurrentQuestion;
 
-    // HUD
+    /**
+     * HUD
+     * Shows the number of questions answered correctly
+     * and the coins taken
+     */
     private HUD mHUD;
 
     // Sound
+    // Loads and stores the game sounds to be played anytime
     private Sound mSound;
 
     // Frames per second
@@ -94,6 +99,7 @@ public class Game extends Canvas implements Runnable {
 	
 	mMenus = new HashMap<String, Menu>();
 
+	// Creates the Pause Button
 	mPauseButton = new Button("Pausar");
 	mPauseButton.setWidth(100);
 	mPauseButton.setHeight(40);
@@ -105,10 +111,11 @@ public class Game extends Canvas implements Runnable {
      */
     public void init() {
 
-	mPlayer = new Player(Images.getImage("/entities/player_spritesheet.png")); // Creates the player
+	// Creates and adds the player
+	mPlayer = new Player(Images.getImage("/entities/player_spritesheet.png"));
 	mPlayer.setVelocity(200, 0);
 	mPlayer.setRelativeVelocity(mPlayer.getVelocity());
-	addEntity(mPlayer); // Adds the player to the game entities
+	addEntity(mPlayer);
 
 	mHUD = new HUD(this);
         mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
@@ -117,13 +124,18 @@ public class Game extends Canvas implements Runnable {
 	loadMenus();
 	mainMenu();
 
+	// Starts the background sound
 	mSound.play("background", true);
     }
 
+    /**
+     * Creates the game menus
+     */
     private void loadMenus() {
 	
 	Menu menu = null;
-
+	
+	// Main Menu
 	menu = new Menu(this);
 	menu.setPosition(mWidth / 2, 3 * mHeight / 4);
 	menu.addButton(new Button("Jugar"));
@@ -131,13 +143,14 @@ public class Game extends Canvas implements Runnable {
 	menu.addButton(new Button("Salir"));
 	mMenus.put("MainMenu", menu);
 
+	// Pause Menu
 	menu = new Menu(this);
-	//menu.setPosition(mWidth / 2, 3 * mHeight / 4);
 	menu.addButton(new Button("Reanudar"));
 	menu.addButton(new Button("Reiniciar"));
 	menu.addButton(new Button("Menu Principal"));
 	mMenus.put("PauseMenu", menu);
 
+	// Game Over Menu
 	menu = new Menu(this);
 	menu.setPosition(mWidth / 2, 3 * mHeight / 4);
 	menu.addButton(new Button("Jugar"));
@@ -145,6 +158,12 @@ public class Game extends Canvas implements Runnable {
 	mMenus.put("GameOverMenu", menu);
     }
 
+    /**
+     * Set the current menu.
+     * If the current menu is not null, it is shown to the screen
+     *
+     * @param menu The name of the menu, in the mMenus HashMap
+     */
     public void setMenu(String menu) {
 	mCurrentMenu = mMenus.get(menu);
     }
@@ -161,6 +180,12 @@ public class Game extends Canvas implements Runnable {
 	return mPlayer;
     }
 
+    /**
+     * Plays a sound previously loaded
+     *
+     * @param sound The name of the sound
+     * @param loop True for infinite looping
+     */
     public void playSound(String sound, boolean loop) {
 	mSound.play(sound, loop);
     }
@@ -172,7 +197,7 @@ public class Game extends Canvas implements Runnable {
     /**
      * Sets the game state
      *
-     * @param state A state of the enum States
+     * @param state A state in the enum States
      */
     public void setState(States state) {
         mState = state;
@@ -201,7 +226,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     /**
-     * Adds a entity to the game
+     * Adds an entity to the game
      *
      * @param entity
      */
@@ -217,28 +242,43 @@ public class Game extends Canvas implements Runnable {
         new Thread(this).start();
     }
     
+    /**
+     * Shows the main menu
+     */
     public void mainMenu() {
 	reset();
 	setState(States.MAINMENU);
 	setMenu("MainMenu");
     }
 
+    /**
+     * Starts a new Game
+     */
     public void play() {
 	reset();
 	setState(States.PLAYING);
 	addEntity(mPlayer);
     }
 
+    /**
+     * Pauses the game and shows the Pause Menu
+     */
     public void pause() {
 	setState(States.PAUSED);
 	setMenu("PauseMenu");
     }
 
+    /**
+     * Resumes the game after being paused
+     */
     public void resume() {
 	setState(States.PLAYING);
 	mCurrentMenu = null;
     }
-
+    
+    /**
+     * Called when the player losses
+     */
     public void gameOver() {
 	setState(States.GAMEOVER);
 	setMenu("GameOverMenu");
@@ -252,6 +292,9 @@ public class Game extends Canvas implements Runnable {
 	System.exit(0);
     }
 
+    /**
+     * Resets the game as it's first started
+     */
     public void reset() {
 	mCurrentMenu = null;
 	mEntities.clear();
@@ -272,6 +315,7 @@ public class Game extends Canvas implements Runnable {
 	while(it.hasNext()) {
 	    entity = it.next();
 
+	    // Checks collision between the player and the entities
 	    if(entity.collidesWith(mPlayer)) {
 		entity.testCollition(); // Prints a rectangle around the entity
 		
@@ -286,14 +330,13 @@ public class Game extends Canvas implements Runnable {
 		}
 		else if(entity.getType() == Entity.Type.QBOX) {
 		    mSound.play("question");
-		    
 		    mCurrentQuestion = ((QuestionBox) entity).getQuestion();
-		    
 		    entity.setAlive(false);
-		    //mPlayer.addPoint();
+		
 		}
 	    }
 
+	    // Removes all the QuestionBox if a Question is being shown
 	    if(entity.getType() == Entity.Type.QBOX && mCurrentQuestion != null)
 		entity.setAlive(false);
 
@@ -305,13 +348,17 @@ public class Game extends Canvas implements Runnable {
 
 	}
 
+	// Checks collision between the question's options and the player
 	if(mCurrentQuestion != null && !mCurrentQuestion.isAnswered()) {
 	    mCurrentQuestion.checkCollision(mPlayer);
+	    
+	    // If the player selected the correct option 
 	    if(mCurrentQuestion.getState() == Question.State.CORRECT) {
 		mSound.play("correct");
 		mPlayer.addPoint();
 		mCurrentQuestion = null;
 	    }
+	    // If the player selected an incorrect option
 	    else if(mCurrentQuestion.getState() == Question.State.WRONG) {
 		mSound.play("wrong");
 		gameOver();
@@ -319,7 +366,7 @@ public class Game extends Canvas implements Runnable {
 	    }
 	}
 
-	// Player and Map collision
+	// Player and Map collision. Keeps the player between the Map Bounds
 	if(mPlayer.getBottom() > mMap.getBottomBound()) {
 	    mPlayer.setBottom(mMap.getBottomBound());
 	    mPlayer.setVY(0);
@@ -330,9 +377,7 @@ public class Game extends Canvas implements Runnable {
 	    mPlayer.setTop(mMap.getTopBound());
 	    mPlayer.setVY(0);
 	}
-
     }
-
 
     /**
      * Updates the game world
@@ -349,6 +394,7 @@ public class Game extends Canvas implements Runnable {
         for(Entity entity : mEntities)
             entity.move(duration);
 
+	// Moves the question
 	if(mCurrentQuestion != null)
 	    mCurrentQuestion.move(duration);
 
@@ -384,7 +430,8 @@ public class Game extends Canvas implements Runnable {
 	    // Draws the HUD
 	    mHUD.draw(g);
 	}
-
+	
+	// Draws the question
 	if(mCurrentQuestion != null)
 	    mCurrentQuestion.draw(g);
 

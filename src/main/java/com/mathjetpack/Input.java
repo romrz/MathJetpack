@@ -5,9 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyListener;
 
-/**
- * Created by rom on 13/10/14.
- */
 
 public class Input implements KeyListener, MouseListener {
 
@@ -25,6 +22,7 @@ public class Input implements KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
+	// Apply thrust to the jetpack
 	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 	    mGame.playSound("jetpack", true);
 	    mGame.getPlayer().applyThrust();
@@ -41,6 +39,7 @@ public class Input implements KeyListener, MouseListener {
             System.out.println("KEY EVENT");
         }
 
+	// Removes the thrust from the jetpack 
 	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 	    mGame.stopSound("jetpack");
 	    mGame.getPlayer().removeThrust();
@@ -60,6 +59,7 @@ public class Input implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+	// Handles the input on Menu Buttons
 	if(mGame.getCurrentMenu() != null)
 	    mGame.getCurrentMenu().inputHandling(e);
 	

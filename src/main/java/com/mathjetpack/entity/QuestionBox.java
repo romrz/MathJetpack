@@ -4,8 +4,11 @@ import mathjetpack.images.Images;
 
 import java.awt.image.BufferedImage;
 
+
 public class QuestionBox extends AnimatedEntity {
 
+    // The Question to be shown when the player selects
+    // this Question Box
     private Question mQuestion;
         
     /**
@@ -22,7 +25,6 @@ public class QuestionBox extends AnimatedEntity {
 	// Add animations
 	addAnimation(new AnimationInfo());
 	setAnimation(1);
-
     }
 
     public void setQuestion(Question question) {

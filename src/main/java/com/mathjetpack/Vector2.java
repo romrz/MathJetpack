@@ -1,8 +1,6 @@
 package mathjetpack;
 
-/**
- * Created by rom on 13/10/14.
- */
+
 public class Vector2 {
 
     public double x;
@@ -53,5 +51,4 @@ public class Vector2 {
     public Vector2 multiply(double n) {
         return new Vector2(x * n, y * n);
     }
-
 }

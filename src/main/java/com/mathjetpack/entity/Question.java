@@ -5,15 +5,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
-public class Question extends Entity {
 
+public class Question extends Entity {
+    
+    // States of the Question
     public static enum State {CORRECT, WRONG, NO_SELECTED};
     
+    // The Question
     private String mQuestion;
+    
     private State mState;
-
+    
+    // Options for this question
     private ArrayList<Option> mOptions;
 
+    // Distance left until the options begin to move
+    // to the player
     private double mDistanceLeft;
 
     public Question(String question) {
@@ -25,7 +32,6 @@ public class Question extends Entity {
 	mOptions = new ArrayList<Option>();
 
 	mDistanceLeft = 400;
-
     }
 
     public void setState(State state) {
@@ -44,9 +50,16 @@ public class Question extends Entity {
 	mOptions.add(o);
     }
 
+    /**
+     * Checks collision between an entity(the player) and
+     * an option and sets the question's state
+     * depending on what was answered by the player
+     *
+     * @param entity The entity to check collision with. Generally the player.
+     * @return The state of the question
+     */
     public State checkCollision(Entity entity) {
 	for(Option option : mOptions) {
-
 	    if(option.collidesWith(entity) && !isAnswered())
 		if(option.isCorrect())
 		    mState = State.CORRECT;
@@ -60,6 +73,12 @@ public class Question extends Entity {
 	return mState;
     }
 
+    /**
+     * Moves the question's options or updates the distance left
+     * until the options have to move
+     *
+     * @param duration The frame duration in seconds
+     */
     public void move(double duration) {
 	
 	mDistanceLeft -= mVelocity.x * duration;
@@ -70,6 +89,9 @@ public class Question extends Entity {
 	    }
     }
 
+    /**
+     * Draws the question and its options
+     */
     public void draw(Graphics2D g) {
 
 	if(mWidth == 0 || mHeight == 0) {
@@ -84,7 +106,5 @@ public class Question extends Entity {
 	for(Option option : mOptions) {
 	    option.draw(g);
 	}
-
     }
-
 }

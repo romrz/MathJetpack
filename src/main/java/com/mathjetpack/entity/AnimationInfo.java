@@ -28,7 +28,6 @@ public class AnimationInfo {
     public AnimationInfo(int startFrame, int frames, int dir, int fps, boolean loop) {
 	
 	mCurrentFrame = startFrame;
-
 	setStartFrame(startFrame);
 	setFrames(frames);
 	setDirection(dir);
@@ -151,7 +150,6 @@ public class AnimationInfo {
 		    mCurrentFrame = mStartFrame;
 		if(mAnimationDirection == -1 && mCurrentFrame < mStartFrame)
 		    mCurrentFrame = mStartFrame + mFrames - 1;
-
 	    }
 	}
     }

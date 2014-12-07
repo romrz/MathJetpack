@@ -9,9 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
-/**
- * Created by rom on 20/10/14.
- */
+
 public class Map {
 
     // Map visible dimensions
@@ -22,15 +20,13 @@ public class Map {
     private int mTopBound;
     private int mBottomBound;
 
-    // Map Bounds
-    private Rectangle mBounds;
-
     // Background Images
     private LinkedList<MapImage> mMapImages;
 
     private double mPosition;
     private double mVelocity;
 
+    // The entities generator
     private EntitiesGenerator mGenerator;
 
     /**
@@ -45,7 +41,6 @@ public class Map {
 
         mWidth = width;
         mHeight = height;
-	mBounds = new Rectangle(mWidth, mHeight - 80);
 
 	mTopBound = 10;
 	mBottomBound = mHeight - 75;
@@ -119,10 +114,6 @@ public class Map {
         return mHeight;
     }
 
-    public final Rectangle getBounds() {
-	return mBounds;
-    }
-
     public int getTopBound() {
 	return mTopBound;
     }
@@ -150,13 +141,14 @@ public class Map {
             image.move(duration);
 	
 	mPosition += mVelocity * duration;
-
+	
 	mGenerator.update();
-
     }
 
     /**
      * Draws the Map
+     *
+     * @param g The graphics
      */
     public void draw(Graphics2D g) {
 
@@ -167,6 +159,5 @@ public class Map {
 	// Draws the images
         for(MapImage image : mMapImages)
             image.draw(g);
-
     }
 }

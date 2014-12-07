@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+
 public class HUD {
     
     private Game mGame;
@@ -20,7 +21,6 @@ public class HUD {
 
 	mPointsImage = Images.getImage("/entities/question_box.png");	
 	mCoinsImage = Images.getImage("/entities/single_coin.png");
-
     }
 
     public void draw(Graphics2D g) {
@@ -34,5 +34,4 @@ public class HUD {
 	g.drawString("" + mGame.getPlayer().getCoins(), 20 + mCoinsImage.getWidth(), 60 + mCoinsImage.getHeight());
 
     }
-
 }

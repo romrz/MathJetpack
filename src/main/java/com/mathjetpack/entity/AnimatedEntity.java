@@ -23,7 +23,6 @@ public class AnimatedEntity extends Entity {
     /**
      * Constructor.
      * Initializes its attributes with the given animation's number
-     *
      */
     public AnimatedEntity() {
         super();

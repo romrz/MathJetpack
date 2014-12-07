@@ -6,10 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
+
 public class Wall extends Entity {
     
+    // Number of bricks of the wall
     private int mBricks;
     
+    // Height of each brick
     private int mBrickHeight;
 
     /**
@@ -28,6 +31,9 @@ public class Wall extends Entity {
 	setHeight(mBrickHeight * mBricks);	
     }
 
+    /**
+     * Set the number of bricks
+     */
     public void setBricks(int bricks) {
 	mBricks = bricks;
     }
