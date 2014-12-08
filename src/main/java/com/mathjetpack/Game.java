@@ -356,6 +356,7 @@ public class Game extends Canvas implements Runnable {
 	    if(mCurrentQuestion.getState() == Question.State.CORRECT) {
 		mSound.play("correct");
 		mPlayer.addPoint();
+		mPlayer.setVX(mPlayer.getVX() + 10);
 		mCurrentQuestion = null;
 	    }
 	    // If the player selected an incorrect option

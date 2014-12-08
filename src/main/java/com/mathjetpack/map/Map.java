@@ -23,8 +23,8 @@ public class Map {
     // Background Images
     private LinkedList<MapImage> mMapImages;
 
-    private double mPosition;
-    private double mVelocity;
+    private Vector2 mPosition;
+    private Vector2 mVelocity;
 
     // The entities generator
     private EntitiesGenerator mGenerator;
@@ -51,8 +51,8 @@ public class Map {
 	
 	mGenerator = new EntitiesGenerator(game, this);
 	
-	mPosition = 0.0;
-	mVelocity = relativeVelocity.x;
+	mPosition = new Vector2();
+	mVelocity = relativeVelocity;
     }
 
     /**
@@ -123,11 +123,12 @@ public class Map {
     }
 
     public double getX() {
-	return mPosition;
+	return mPosition.x;
     }
 
     public void reset() {
-	mPosition = 0;
+	mPosition.x = 0;
+	mPosition.y = 0;
 	mGenerator.reset();
     }
 
@@ -140,7 +141,7 @@ public class Map {
         for(MapImage image : mMapImages)
             image.move(duration);
 	
-	mPosition += mVelocity * duration;
+	mPosition.addScaledVector(mVelocity, duration);
 	
 	mGenerator.update();
     }
