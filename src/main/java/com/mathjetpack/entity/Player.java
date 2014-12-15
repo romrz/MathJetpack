@@ -7,6 +7,9 @@ import javax.imageio.ImageIO;
 import mathjetpack.Vector2;
 
 public class Player extends AnimatedEntity {
+
+    // Player name
+    private String mName;
     
     // Coins taken
     private int mCoins;
@@ -38,6 +41,14 @@ public class Player extends AnimatedEntity {
 	setImageFrames(7);
 
 	reset();
+    }
+
+    public void setName(String name) {
+	mName = name;
+    }
+
+    public String getName() {
+	return mName;
     }
 
     public void setCoins(int coins) {

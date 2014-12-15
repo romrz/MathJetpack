@@ -1,12 +1,14 @@
 package mathjetpack.ui;
 
 import mathjetpack.Game;
+import mathjetpack.entity.Player;
 import mathjetpack.Vector2;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 /**
  * This class creates game menus, with images and buttons
@@ -84,13 +86,22 @@ public class Menu {
 		
 		mGame.playSound("select", false);
 
-		if(b.getText().equals("Jugar")) mGame.play();
+		if(b.getText().equals("Jugar")) {
+
+		    Player p = mGame.getPlayer();
+		    
+		    if(p.getName() == null)
+			p.setName(JOptionPane.showInputDialog(mGame, "Jugador:", "Nombre del jugador", JOptionPane.QUESTION_MESSAGE));
+		    
+		    mGame.play();
+		}
 		else if(b.getText().equals("Pausar")) mGame.pause();
 		else if(b.getText().equals("Reanudar")) mGame.resume();
 		else if(b.getText().equals("Reiniciar")) mGame.play();
 		else if(b.getText().equals("Menu Principal")) mGame.mainMenu();
 		else if(b.getText().equals("Salir")) mGame.quit();
-		else if(b.getText().equals("Puntuaciones")) ;
+		else if(b.getText().equals("Puntuaciones")) mGame.showScores();
+		else if(b.getText().equals("Preguntas")) mGame.showQuestionManager();
 	    }
         }
     }

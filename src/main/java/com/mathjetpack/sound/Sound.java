@@ -24,6 +24,7 @@ public class Sound {
 
 	BufferedReader reader = null;
 	try {
+	    //	    reader = new BufferedReader(new FileReader(new File(Sound.class.getResource("/sound/sounds.txt").toURI())));
 	    reader = new BufferedReader(new FileReader("target/classes/sound/sounds.txt"));
 	    
 	    String line;

@@ -4,7 +4,11 @@ import mathjetpack.Game;
 import mathjetpack.map.Map;
 import mathjetpack.Vector2;
 
+import java.util.ArrayList;
 import java.util.Random;
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 /**
  * 
@@ -20,6 +24,9 @@ public class EntitiesGenerator {
     // A random Object useful throughout the class
     protected Random rand;
 
+    // Questions data
+    protected ArrayList<Question> mQuestions;
+    
     public EntitiesGenerator(Game game, Map map) {
 	mGame = game;
 	mMap = map;
@@ -27,6 +34,65 @@ public class EntitiesGenerator {
 	next = 1000;
 	
 	rand = new Random();
+
+	mQuestions = new ArrayList<Question>();
+	loadQuestions();
+    }
+
+    private void loadQuestions() {
+
+	Question question = null;
+	Option option = null;
+
+	String questionInfo[] = null;
+	boolean correctOption;
+	String line;
+	String opt;
+
+	Vector2 relVel = mGame.getPlayer().getVelocity();
+
+	BufferedReader reader = null;
+	try {
+
+	    reader = new BufferedReader(new FileReader("target/classes/questions/questions.txt"));
+	    while((line = reader.readLine()) != null) {
+	    
+		questionInfo = line.split(" ");
+		
+		question = new Question(questionInfo[0]);
+
+		for(int i = 1; i < 4; i++) {
+		
+		    correctOption = false;
+    
+		    opt = questionInfo[i];
+
+		    if(opt.startsWith("*")) {
+			opt = opt.substring(1);
+			correctOption = true;
+		    }
+
+		    option = new Option(opt);
+		    option.setPosition(mGame.getWidth() - option.getWidth() - 20, (i) * mGame.getHeight() / 5);
+		    option.setCorrect(correctOption);
+		    option.setRelativeVelocity(relVel);
+		    question.addOption(option);
+		}
+		
+		mQuestions.add(question);		
+	    }
+	}
+	catch(Exception e) {
+	    System.out.println("Error: Failed to load the Questions." + e);
+	}
+	finally {
+	    try {
+		reader.close();
+	    }
+	    catch(Exception e) {
+		System.out.println("Error: Failed to load the Questionss.");
+	    }
+	}
     }
 
     /**
@@ -92,26 +158,20 @@ public class EntitiesGenerator {
      */
     public int generateQuestionBox() {
 
+	if(mGame.isInQuestion()) return 0;
+
 	Vector2 relVel = mGame.getPlayer().getVelocity();
 
 	QuestionBox e = new QuestionBox();
 	e.setRelativeVelocity(relVel);
 	e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
 
-	Question question = new Question("¿ 2 x 3 - 5 ?");
+	Question question = mQuestions.get(rand.nextInt(mQuestions.size()));
 	question.setVelocity(relVel.x, relVel.y);
 	question.setPosition(mGame.getWidth() / 4, 20);
+	question.setOptionsPosition(mGame.getWidth());
+	question.reset();
 
-	Option option = null;
-	for(int i = 1; i <= 3; i++) {
-	    option = new Option("" + i);
-	    option.setPosition(mGame.getWidth() - option.getWidth() - 20, (i) * mGame.getHeight() / 5);
-	    option.setRelativeVelocity(relVel);
-	    option.setCorrect(i == 1);
-
-	    question.addOption(option);
-	}
-	
 	e.setQuestion(question);
 
 	mGame.addEntity(e);

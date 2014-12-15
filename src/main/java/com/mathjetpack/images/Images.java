@@ -40,7 +40,7 @@ public final class Images {
 	// Loads the image
 	BufferedImage auxImage = null;
 	try {
-	    auxImage = ImageIO.read(Images.class.getResource(path));    
+	    auxImage = ImageIO.read(Images.class.getResource(path));
 	}
 	catch(Exception e) {
 	    System.out.println("Error loading the image: " + path);

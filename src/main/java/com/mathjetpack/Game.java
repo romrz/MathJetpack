@@ -15,6 +15,7 @@ import mathjetpack.sound.*;
 import java.awt.Graphics2D;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -23,7 +24,10 @@ import java.awt.Dimension;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.HashMap;
-
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 
 public class Game extends Canvas implements Runnable {
 
@@ -140,6 +144,7 @@ public class Game extends Canvas implements Runnable {
 	menu.setPosition(mWidth / 2, 3 * mHeight / 4);
 	menu.addButton(new Button("Jugar"));
 	menu.addButton(new Button("Puntuaciones"));
+	menu.addButton(new Button("Preguntas"));
 	menu.addButton(new Button("Salir"));
 	mMenus.put("MainMenu", menu);
 
@@ -156,6 +161,60 @@ public class Game extends Canvas implements Runnable {
 	menu.addButton(new Button("Jugar"));
 	menu.addButton(new Button("Menu Principal"));
 	mMenus.put("GameOverMenu", menu);
+    }
+
+    public void showQuestionManager() {
+	new QuestionManager();
+    }
+
+    public void showScores() {
+	new ScoresFrame();
+    }
+
+    
+    /**
+     * Updates the scores file
+     */
+    public void updateScores(String player, int score) {
+	BufferedReader reader = null;
+	BufferedWriter writer = null;
+	
+	boolean emptyFile = true;
+	String scoresString = "", scoreAux[], line;
+	try {
+	    reader = new BufferedReader(new FileReader("target/classes/scores.txt"));
+
+	    while((line = reader.readLine()) != null) {
+		emptyFile = false;
+		scoreAux = line.split(" ");
+
+		if(score >= Integer.parseInt(scoreAux[1])) {
+		    scoresString += player + ": " + score + "\n";
+		    score = -1;
+		}
+		else
+		    scoresString += scoreAux[0] + scoreAux[1] + "\n";
+	    }
+	    
+	    if(emptyFile)
+		scoresString += player + ": " + score + "\n";
+
+	}
+	catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
+	finally {
+	    try { reader.close(); }
+	    catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
+	}
+	
+	try {
+	    writer = new BufferedWriter(new FileWriter("target/classes/scores.txt"));
+	    writer.write(scoresString, 0, scoresString.length());
+	}
+	catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
+	finally {
+	    try { writer.close(); }
+	    catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
+	}
     }
 
     /**
@@ -277,11 +336,13 @@ public class Game extends Canvas implements Runnable {
     }
     
     /**
-     * Called when the player losses
+     * Called when the player lose
      */
     public void gameOver() {
+	mCurrentQuestion = null;
 	setState(States.GAMEOVER);
 	setMenu("GameOverMenu");
+	updateScores(mPlayer.getName(), mPlayer.getPoints());
     }
 
     /**
@@ -296,6 +357,7 @@ public class Game extends Canvas implements Runnable {
      * Resets the game as it's first started
      */
     public void reset() {
+	mCurrentQuestion = null;
 	mCurrentMenu = null;
 	mEntities.clear();
 	mMap.reset();
@@ -422,6 +484,7 @@ public class Game extends Canvas implements Runnable {
         for(Entity entity : mEntities)
             entity.draw(g);
 
+	// Draws the menu if it's set
 	if(mCurrentMenu != null)
 	    mCurrentMenu.draw(g);
 	
@@ -430,6 +493,15 @@ public class Game extends Canvas implements Runnable {
 	    
 	    // Draws the HUD
 	    mHUD.draw(g);
+	}
+	else if(mState == States.GAMEOVER) {
+	    // Draws the score
+	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
+	    g.setColor(Color.WHITE);
+	    g.drawString("!Perdiste!", 330, 150);
+	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+	    g.drawString("Puntuacion: " + mPlayer.getPoints(), 360, 200);
+
 	}
 	
 	// Draws the question
