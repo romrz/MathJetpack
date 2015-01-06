@@ -56,6 +56,8 @@ public class Game extends Canvas implements Runnable {
     // Current Question. If it's not null then it's shown on screen
     private Question mCurrentQuestion;
 
+    private ScoresManager mScoresManager;
+
     /**
      * HUD
      * Shows the number of questions answered correctly
@@ -124,6 +126,7 @@ public class Game extends Canvas implements Runnable {
 	mHUD = new HUD(this);
         mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
 	mSound = new Sound();
+	mScoresManager = new ScoresManager();
 
 	loadMenus();
 	mainMenu();
@@ -168,53 +171,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void showScores() {
-	new ScoresFrame();
-    }
-
-    
-    /**
-     * Updates the scores file
-     */
-    public void updateScores(String player, int score) {
-	BufferedReader reader = null;
-	BufferedWriter writer = null;
-	
-	boolean emptyFile = true;
-	String scoresString = "", scoreAux[], line;
-	try {
-	    reader = new BufferedReader(new FileReader("target/classes/scores.txt"));
-
-	    while((line = reader.readLine()) != null) {
-		emptyFile = false;
-		scoreAux = line.split(" ");
-
-		if(score >= Integer.parseInt(scoreAux[1])) {
-		    scoresString += player + ": " + score + "\n";
-		    score = -1;
-		}
-		else
-		    scoresString += scoreAux[0] + scoreAux[1] + "\n";
-	    }
-	    
-	    if(emptyFile)
-		scoresString += player + ": " + score + "\n";
-
-	}
-	catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
-	finally {
-	    try { reader.close(); }
-	    catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
-	}
-	
-	try {
-	    writer = new BufferedWriter(new FileWriter("target/classes/scores.txt"));
-	    writer.write(scoresString, 0, scoresString.length());
-	}
-	catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
-	finally {
-	    try { writer.close(); }
-	    catch(Exception e) { System.out.println("Error: Failed to save the scores." + e); }
-	}
+	mScoresManager.showScores();
     }
 
     /**
@@ -289,6 +246,7 @@ public class Game extends Canvas implements Runnable {
      *
      * @param entity
      */
+
     public void addEntity(Entity entity) {
         mEntities.add(entity);
     }
@@ -342,7 +300,7 @@ public class Game extends Canvas implements Runnable {
 	mCurrentQuestion = null;
 	setState(States.GAMEOVER);
 	setMenu("GameOverMenu");
-	updateScores(mPlayer.getName(), mPlayer.getPoints());
+	mScoresManager.addScore(mPlayer.getName(), mPlayer.getPoints());
     }
 
     /**
@@ -379,8 +337,6 @@ public class Game extends Canvas implements Runnable {
 
 	    // Checks collision between the player and the entities
 	    if(entity.collidesWith(mPlayer)) {
-		entity.testCollition(); // Prints a rectangle around the entity
-		
 		if(entity.getType() == Entity.Type.WALL) {
 		    mSound.play("hurt");
 		    gameOver();
@@ -424,7 +380,12 @@ public class Game extends Canvas implements Runnable {
 	    // If the player selected an incorrect option
 	    else if(mCurrentQuestion.getState() == Question.State.WRONG) {
 		mSound.play("wrong");
-		gameOver();
+		
+		if(mPlayer.getCoins() >= 100)
+		    mPlayer.setCoins(mPlayer.getCoins() - 100);
+		else
+		    gameOver();
+
 		mCurrentQuestion = null;
 	    }
 	}
@@ -496,8 +457,8 @@ public class Game extends Canvas implements Runnable {
 	}
 	else if(mState == States.GAMEOVER) {
 	    // Draws the score
-	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
 	    g.setColor(Color.WHITE);
+	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
 	    g.drawString("!Perdiste!", 330, 150);
 	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
 	    g.drawString("Puntuacion: " + mPlayer.getPoints(), 360, 200);
@@ -600,21 +561,9 @@ public class Game extends Canvas implements Runnable {
      * @param bs
      */
     private void printDebugInfo(Graphics2D g, BufferStrategy bs) {
-        int vspace = 15;
-        int vstart = 25;
-        int i = 1;
-
-	g.setFont(null);
         g.setColor(Color.BLACK);
-        g.drawString("Press D to show/hide the debugging information", 10, vstart);
-        g.drawString("FPS: " + mFrameRate, 10, vspace * i++ + vstart);
-        g.drawString("Page Flipping Available: " + bs.getCapabilities().isPageFlipping(), 10, vspace * i++ + vstart);
-        g.drawString("Flip Contents: " + bs.getCapabilities().getFlipContents().toString(), 10, vspace * i++ + vstart);
-        g.drawString("Full Screen Required: " + bs.getCapabilities().isFullScreenRequired(), 10, vspace * i++ + vstart);
-        g.drawString("Multi Buffer Available: " + bs.getCapabilities().isMultiBufferAvailable(), 10, vspace * i++ + vstart);
-        g.drawString("Front Buffer Accelerated: " + bs.getCapabilities().getFrontBufferCapabilities().isAccelerated(), 10, vspace * i++ + vstart);
-        g.drawString("Back Buffer Accelerated: " + bs.getCapabilities().getBackBufferCapabilities().isAccelerated(), 10, vspace * i++ + vstart);
-        g.drawString("Front Buffer True Volatile: " + bs.getCapabilities().getFrontBufferCapabilities().isTrueVolatile(), 10, vspace * i++ + vstart);
-        g.drawString("Back Buffer True Volatile: " + bs.getCapabilities().getBackBufferCapabilities().isTrueVolatile(), 10, vspace * i++ + vstart);
+	g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        g.drawString("Press D to show/hide the debugging information", 10, 20);
+        g.drawString("FPS: " + mFrameRate, 10, 40);
     }
 }

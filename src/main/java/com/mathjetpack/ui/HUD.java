@@ -24,14 +24,12 @@ public class HUD {
     }
 
     public void draw(Graphics2D g) {
-	
+	g.setColor(Color.WHITE);	
 	g.drawImage(mPointsImage, 10, 10, mPointsImage.getWidth(), mPointsImage.getHeight(), null);
 	g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-	g.setColor(Color.WHITE);
 	g.drawString("" + mGame.getPlayer().getPoints(), 20 + mPointsImage.getWidth(), 5 + mPointsImage.getHeight());
 	g.drawImage(mCoinsImage, 10, 20 + mPointsImage.getHeight(), mCoinsImage.getWidth(), mCoinsImage.getHeight(), null);
 	g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 	g.drawString("" + mGame.getPlayer().getCoins(), 20 + mCoinsImage.getWidth(), 60 + mCoinsImage.getHeight());
-
     }
 }

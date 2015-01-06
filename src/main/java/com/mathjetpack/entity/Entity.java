@@ -47,8 +47,6 @@ public class Entity {
     protected boolean mVisible;
     protected boolean mAlive;
     
-    // Test collition
-    protected boolean mTestCollition = false;
 
     /**
      * Constructor.
@@ -243,10 +241,6 @@ public class Entity {
 	    && this != e;
     }
 
-    public void testCollition() {
-	mTestCollition = true;
-    }
-    
     /**
      * Integrates the entity in time by the given amount.
      * This method uses the Euler integration method
@@ -278,11 +272,5 @@ public class Entity {
     public void draw(Graphics2D g) {
 	if(mImage != null)
 	    g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
-
-	// Draws a rectangle around the entity to see clearly when it collided
-	if(mTestCollition) {
-	    g.setColor(Color.WHITE);
-	    g.drawRect((int) mPosition.x, (int) mPosition.y, mWidth, mHeight);
-	}
     }
 }

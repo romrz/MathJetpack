@@ -49,10 +49,6 @@ public class Wall extends Entity {
 	for(int y = (int) mPosition.y; y < mPosition.y + mHeight; y += mBrickHeight)
 	    g.drawImage(mImage, (int) mPosition.x, y, mWidth, mBrickHeight, null);
 
-	if(mTestCollition) {
-	    g.setColor(Color.WHITE);
-	    g.drawRect((int) mPosition.x, (int) mPosition.y, mWidth, mHeight);
-	}
     }
 
 }

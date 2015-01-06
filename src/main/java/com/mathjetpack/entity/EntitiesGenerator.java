@@ -169,7 +169,7 @@ public class EntitiesGenerator {
 	Question question = mQuestions.get(rand.nextInt(mQuestions.size()));
 	question.setVelocity(relVel.x, relVel.y);
 	question.setPosition(mGame.getWidth() / 4, 20);
-	question.setOptionsPosition(mGame.getWidth());
+	question.setOptionsPosition(mGame.getWidth() - 40);
 	question.reset();
 
 	e.setQuestion(question);

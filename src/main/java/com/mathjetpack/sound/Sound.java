@@ -52,6 +52,7 @@ public class Sound {
 		System.out.println("Error: Failed to load the sounds.");
 	    }
 	}
+
     }
 
     public void play(String sound) {

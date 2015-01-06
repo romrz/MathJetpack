@@ -58,7 +58,7 @@ public class Question extends Entity {
     public void setOptionsPosition(double x) {
 	
 	for(Option o : mOptions)
-	    o.setX(x - getWidth() - 20);
+	    o.setX(x - 40);
 	
     }
 
@@ -111,8 +111,8 @@ public class Question extends Entity {
 	    mHeight = g.getFontMetrics().getHeight();
 	}
 	
-	g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
 	g.setColor(Color.WHITE);
+	g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
 	g.drawString(mQuestion, getLeft(), getBottom());
 	
 	for(Option option : mOptions) {
