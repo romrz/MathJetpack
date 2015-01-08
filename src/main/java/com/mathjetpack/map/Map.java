@@ -132,6 +132,10 @@ public class Map {
 	mGenerator.reset();
     }
 
+    public void showQuestionManager() {
+	mGenerator.showQuestionManager();
+    }
+
     /**
      * Moves the map
      */

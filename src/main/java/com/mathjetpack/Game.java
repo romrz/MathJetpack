@@ -167,7 +167,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void showQuestionManager() {
-	new QuestionManager();
+	mMap.showQuestionManager();
     }
 
     public void showScores() {
@@ -381,8 +381,10 @@ public class Game extends Canvas implements Runnable {
 	    else if(mCurrentQuestion.getState() == Question.State.WRONG) {
 		mSound.play("wrong");
 		
-		if(mPlayer.getCoins() >= 100)
+		if(mPlayer.getCoins() >= 100) {
+		    mPlayer.addPoint();
 		    mPlayer.setCoins(mPlayer.getCoins() - 100);
+		}
 		else
 		    gameOver();
 
@@ -466,8 +468,11 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	// Draws the question
-	if(mCurrentQuestion != null)
+	if(mCurrentQuestion != null && mState != States.PAUSED)
 	    mCurrentQuestion.draw(g);
+
+	if(mState == States.MAINMENU)
+	    g.drawImage(Images.getImage("/entities/mathjetpack.png"), 80 , 0, null);
 
         // Shows the info related to the game for debugging purposes
         if(mShowInfo)

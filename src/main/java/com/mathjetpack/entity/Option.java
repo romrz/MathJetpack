@@ -52,4 +52,8 @@ public class Option extends AnimatedEntity {
 	g.setColor(Color.WHITE);
 	g.drawString(mText, getLeft() - mTextWidth - 10, getTop() + (mHeight / 2) + mTextHeight / 2);
     }
+
+    public String toString() {
+	return mCorrect ? "*" + mText : mText;
+    }
 }

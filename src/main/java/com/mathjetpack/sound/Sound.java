@@ -5,6 +5,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
 import java.util.HashMap;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
@@ -12,6 +13,8 @@ import java.io.BufferedReader;
 public class Sound {
     
     private HashMap<String, Clip[]> mSounds;
+    private String mFile1 = "/sound/sounds.txt";
+    private String mFile2 = "./sounds.txt";
 
     public Sound() {
        
@@ -24,9 +27,13 @@ public class Sound {
 
 	BufferedReader reader = null;
 	try {
-	    //	    reader = new BufferedReader(new FileReader(new File(Sound.class.getResource("/sound/sounds.txt").toURI())));
-	    reader = new BufferedReader(new FileReader("target/classes/sound/sounds.txt"));
-	    
+
+	    try {
+		reader = new BufferedReader(new FileReader(mFile2));
+	    } catch(Exception e) {
+		reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(mFile1)));
+	    }
+
 	    String line;
 	    while((line = reader.readLine()) != null) {
 	    

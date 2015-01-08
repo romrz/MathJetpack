@@ -119,4 +119,14 @@ public class Question extends Entity {
 	    option.draw(g);
 	}
     }
+
+    public String toString() {
+    
+	String string = mQuestion + " ";
+    
+	for(Option o : mOptions)
+	    string += o.toString() + " ";
+
+	return string;
+    }
 }

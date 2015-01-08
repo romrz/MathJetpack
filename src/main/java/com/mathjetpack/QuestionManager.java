@@ -1,5 +1,8 @@
 package mathjetpack;
 
+import mathjetpack.entity.Question;
+import mathjetpack.entity.Option;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
@@ -13,28 +16,48 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
+import java.util.Random;
+import java.util.ArrayList;
 
-public class QuestionManager extends JFrame implements ActionListener {
+public class QuestionManager implements ActionListener {
 
-    private String mSourceFile = "target/classes/questions/questions.txt";
+    private Game mGame;
+    private ArrayList<Question> mQuestions;
+    private JFrame mFrame;
+    private String mFile1 = "/questions/questions.txt";
+    private String mFile2 = "./questions.txt";
+    private JTextArea content;
 
-    private File mFile;
-    private JTextArea mContent;
+    public QuestionManager(Game game) {
+	mGame = game;
+	mQuestions = new ArrayList<Question>();
 
-    public QuestionManager() {
-	super("Administrador de Preguntas");
-	
-	mFile = new File(mSourceFile);
+	load();
+    }
+
+    public Question getQuestion() {
+	Random rand = new Random();
+	return mQuestions.get(rand.nextInt(mQuestions.size()));
+    }
+
+    public void showFrame() {
 
 	BufferedReader reader = null;
 	String text = "";
 	
 	try {
-	    reader = new BufferedReader(new FileReader(mFile));
+
+	    try {
+		reader = new BufferedReader(new FileReader(mFile2));
+	    } catch(Exception e) {
+		reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(mFile1)));
+	    }
 	    
 	    String line;
 	    while((line = reader.readLine()) != null) {
@@ -52,9 +75,10 @@ public class QuestionManager extends JFrame implements ActionListener {
 		System.out.println("Error: Failed to load the Questions.");
 	    }
 	}
-	
-	mContent = new JTextArea(text, 20, 50);
-	mContent.setMargin(new Insets(5, 5, 5, 5));
+
+	mFrame = new JFrame("Preguntas");
+	content = new JTextArea(text, 20, 50);
+	content.setMargin(new Insets(5, 5, 5, 5));
 
 	JButton btnSave = new JButton("Guardar");
 	JButton btnExit = new JButton("Salir");
@@ -62,24 +86,85 @@ public class QuestionManager extends JFrame implements ActionListener {
 	btnSave.addActionListener(this);
 	btnExit.addActionListener(this);
 	
-	setLayout(new BorderLayout());
+	mFrame.setLayout(new BorderLayout());
 
 	JPanel panel = new JPanel();
 	panel.add(btnSave);
 	panel.add(btnExit);
 
-
 	String lbl = "Formato de preguntas: pregunta opcion1 opcion2 *opcion_correcta";
-	add(new JLabel(lbl), BorderLayout.NORTH);
-	add(new JScrollPane(mContent), BorderLayout.CENTER);
-	add(panel, BorderLayout.SOUTH);
+	mFrame.add(new JLabel(lbl), BorderLayout.NORTH);
+	mFrame.add(new JScrollPane(content), BorderLayout.CENTER);
+	mFrame.add(panel, BorderLayout.SOUTH);	
 	
-	
-	//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setLocationRelativeTo(null);
-	pack();
-	setVisible(true);
+	//setDefaultCloseOperation(JMFrame.EXIT_ON_CLOSE);
+	mFrame.setLocationRelativeTo(null);
+	mFrame.pack();
+	mFrame.setVisible(true);
 
+    }
+
+    private void load() {
+
+	Question question = null;
+	Option option = null;
+
+	String questionInfo[] = null;
+	boolean correctOption;
+	String line;
+	String opt;
+
+	Vector2 relVel = mGame.getPlayer().getVelocity();
+
+	mQuestions.clear();
+
+	BufferedReader reader = null;
+	try {
+	    
+	    try {
+		reader = new BufferedReader(new FileReader(mFile2));
+	    } catch(Exception e) {
+		reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(mFile1)));
+	    }
+
+	    while((line = reader.readLine()) != null) {
+	    
+		questionInfo = line.split(" ");
+		
+		question = new Question(questionInfo[0]);
+
+		for(int i = 1; i < 4; i++) {
+		
+		    correctOption = false;
+    
+		    opt = questionInfo[i];
+
+		    if(opt.startsWith("*")) {
+			opt = opt.substring(1);
+			correctOption = true;
+		    }
+
+		    option = new Option(opt);
+		    option.setPosition(mGame.getWidth() - option.getWidth() - 20, (i) * mGame.getHeight() / 5);
+		    option.setCorrect(correctOption);
+		    option.setRelativeVelocity(relVel);
+		    question.addOption(option);
+		}
+		
+		mQuestions.add(question);		
+	    }
+	}
+	catch(Exception e) {
+	    System.out.println("Error: Failed to load the Questions." + e);
+	}
+	finally {
+	    try {
+		reader.close();
+	    }
+	    catch(Exception e) {
+		System.out.println("Error: Failed to load the Questionss.");
+	    }
+	}
     }
 
     public void save() {
@@ -87,30 +172,34 @@ public class QuestionManager extends JFrame implements ActionListener {
 	BufferedWriter writer = null;
 
 	try {
-	    writer = new BufferedWriter(new FileWriter(mFile));
-	    String string = mContent.getText();
+	    writer = new BufferedWriter(new FileWriter(mFile2));
+
+	    String string = content.getText();
+
 	    writer.write(string, 0, string.length());
 	}
 	catch(Exception e) {
-	    JOptionPane.showMessageDialog(this, "Error al guardar", "Administrador de preguntas", JOptionPane.ERROR_MESSAGE);
+	    JOptionPane.showMessageDialog(mFrame, "Error al guardar", "Administrador de preguntas", JOptionPane.ERROR_MESSAGE);
 	}
 	finally {
 	    try {
 		writer.close();
 	    }
 	    catch(Exception e) {
-		JOptionPane.showMessageDialog(this, "Error al guardar", "Administrador de preguntas", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(mFrame, "Error al guardar", "Administrador de preguntas", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
 
-	JOptionPane.showMessageDialog(this, "Se ha guardado correctamente", "Administrador de preguntas", JOptionPane.INFORMATION_MESSAGE);
+	JOptionPane.showMessageDialog(mFrame, "Se ha guardado correctamente", "Administrador de preguntas", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
     public void actionPerformed(ActionEvent e) {
 	
-	if(e.getActionCommand().equals("Guardar"))
+	if(e.getActionCommand().equals("Guardar")) {
 	    save();
+	    load();
+	}
 	else if(e.getActionCommand().equals("salir"))
 	    ;
 

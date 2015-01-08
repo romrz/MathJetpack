@@ -41,6 +41,8 @@ public final class Images {
 	BufferedImage auxImage = null;
 	try {
 	    auxImage = ImageIO.read(Images.class.getResource(path));
+	    //
+	    System.out.println(Images.class.getResource(path).toString());
 	}
 	catch(Exception e) {
 	    System.out.println("Error loading the image: " + path);

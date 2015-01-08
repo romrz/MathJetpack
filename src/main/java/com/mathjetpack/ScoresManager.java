@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -25,6 +26,9 @@ public class ScoresManager implements ActionListener {
 
     private LinkedList<String> mPlayers;
     private LinkedList<Integer> mScores;
+
+    private String mFile1 = "/scores.txt";
+    private String mFile2 = "./scores.txt";
 
     private String mSourceFile = "target/classes/scores.txt";
     private File mFile;
@@ -44,7 +48,13 @@ public class ScoresManager implements ActionListener {
 	String line;	
 
 	try {
-	    reader = new BufferedReader(new FileReader(mSourceFile));
+
+	    try {
+		reader = new BufferedReader(new FileReader(mFile2));
+	    } catch(Exception e) {
+		reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(mFile1)));
+	    }
+
 	    while((line = reader.readLine()) != null) {
 		playerScore = line.split(": ");
 		mPlayers.add(playerScore[0]);
@@ -67,7 +77,7 @@ public class ScoresManager implements ActionListener {
 	String scoresString = "";
 
 	try {
-	    writer = new BufferedWriter(new FileWriter(mSourceFile));
+	    writer = new BufferedWriter(new FileWriter(mFile2));
 
 	    ListIterator playerIt = mPlayers.listIterator();
 	    ListIterator scoreIt = mScores.listIterator();
