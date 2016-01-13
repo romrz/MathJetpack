@@ -1,6 +1,5 @@
 package mathjetpack;
 
-
 public class Vector2 {
 
     public double x;
@@ -16,8 +15,8 @@ public class Vector2 {
     }
 
     public void clear() {
-	x = 0.0;
-	y = 0.0;
+        x = 0.0;
+        y = 0.0;
     }
 
     /**

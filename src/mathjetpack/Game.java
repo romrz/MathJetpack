@@ -93,23 +93,23 @@ public class Game extends Canvas implements Runnable {
         setFocusable(true);
         requestFocus();
 
-	// Sets the canvas dimensions
+        // Sets the canvas dimensions
         mWidth = width;
         mHeight = height;
 
-	Input input = new Input(this);
+        Input input = new Input(this);
         addKeyListener(input);
-	addMouseListener(input);
+        addMouseListener(input);
 
         mEntities = new LinkedList<Entity>();
 	
-	mMenus = new HashMap<String, Menu>();
+        mMenus = new HashMap<String, Menu>();
 
-	// Creates the Pause Button
-	mPauseButton = new Button("Pausar");
-	mPauseButton.setWidth(100);
-	mPauseButton.setHeight(40);
-	mPauseButton.setPosition(mWidth - 60, 30);
+        // Creates the Pause Button
+        mPauseButton = new Button("Pausar");
+        mPauseButton.setWidth(100);
+        mPauseButton.setHeight(40);
+        mPauseButton.setPosition(mWidth - 60, 30);
     }
 
     /**
@@ -117,22 +117,22 @@ public class Game extends Canvas implements Runnable {
      */
     public void init() {
 
-	// Creates and adds the player
-	mPlayer = new Player(Images.getImage("/entities/player_spritesheet.png"));
-	mPlayer.setVelocity(200, 0);
-	mPlayer.setRelativeVelocity(mPlayer.getVelocity());
-	addEntity(mPlayer);
+        // Creates and adds the player
+        mPlayer = new Player(Images.getImage("/entities/player_spritesheet.png"));
+        mPlayer.setVelocity(200, 0);
+        mPlayer.setRelativeVelocity(mPlayer.getVelocity());
+        addEntity(mPlayer);
 
-	mHUD = new HUD(this);
+        mHUD = new HUD(this);
         mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
-	mSound = new Sound();
-	mScoresManager = new ScoresManager();
+        mSound = new Sound();
+        mScoresManager = new ScoresManager();
 
-	loadMenus();
-	mainMenu();
+        loadMenus();
+        mainMenu();
 
-	// Starts the background sound
-	mSound.play("background", true);
+        // Starts the background sound
+        mSound.play("background", true);
     }
 
     /**
@@ -140,38 +140,38 @@ public class Game extends Canvas implements Runnable {
      */
     private void loadMenus() {
 	
-	Menu menu = null;
+        Menu menu = null;
 	
-	// Main Menu
-	menu = new Menu(this);
-	menu.setPosition(mWidth / 2, 3 * mHeight / 4);
-	menu.addButton(new Button("Jugar"));
-	menu.addButton(new Button("Puntuaciones"));
-	menu.addButton(new Button("Preguntas"));
-	menu.addButton(new Button("Salir"));
-	mMenus.put("MainMenu", menu);
+        // Main Menu
+        menu = new Menu(this);
+        menu.setPosition(mWidth / 2, 3 * mHeight / 4);
+        menu.addButton(new Button("Jugar"));
+        menu.addButton(new Button("Puntuaciones"));
+        menu.addButton(new Button("Preguntas"));
+        menu.addButton(new Button("Salir"));
+        mMenus.put("MainMenu", menu);
 
-	// Pause Menu
-	menu = new Menu(this);
-	menu.addButton(new Button("Reanudar"));
-	menu.addButton(new Button("Reiniciar"));
-	menu.addButton(new Button("Menu Principal"));
-	mMenus.put("PauseMenu", menu);
+        // Pause Menu
+        menu = new Menu(this);
+        menu.addButton(new Button("Reanudar"));
+        menu.addButton(new Button("Reiniciar"));
+        menu.addButton(new Button("Menu Principal"));
+        mMenus.put("PauseMenu", menu);
 
-	// Game Over Menu
-	menu = new Menu(this);
-	menu.setPosition(mWidth / 2, 3 * mHeight / 4);
-	menu.addButton(new Button("Jugar"));
-	menu.addButton(new Button("Menu Principal"));
-	mMenus.put("GameOverMenu", menu);
+        // Game Over Menu
+        menu = new Menu(this);
+        menu.setPosition(mWidth / 2, 3 * mHeight / 4);
+        menu.addButton(new Button("Jugar"));
+        menu.addButton(new Button("Menu Principal"));
+        mMenus.put("GameOverMenu", menu);
     }
 
     public void showQuestionManager() {
-	mMap.showQuestionManager();
+        mMap.showQuestionManager();
     }
 
     public void showScores() {
-	mScoresManager.showScores();
+        mScoresManager.showScores();
     }
 
     /**
@@ -181,19 +181,19 @@ public class Game extends Canvas implements Runnable {
      * @param menu The name of the menu, in the mMenus HashMap
      */
     public void setMenu(String menu) {
-	mCurrentMenu = mMenus.get(menu);
+        mCurrentMenu = mMenus.get(menu);
     }
 
     public Menu getCurrentMenu() {
-	return mCurrentMenu;
+        return mCurrentMenu;
     }
 
     public Button getPauseButton() {
-	return mPauseButton;
+        return mPauseButton;
     }
 
     public Player getPlayer() {
-	return mPlayer;
+        return mPlayer;
     }
 
     /**
@@ -203,11 +203,11 @@ public class Game extends Canvas implements Runnable {
      * @param loop True for infinite looping
      */
     public void playSound(String sound, boolean loop) {
-	mSound.play(sound, loop);
+        mSound.play(sound, loop);
     }
 
     public void stopSound(String sound) {
-	mSound.stop(sound);
+        mSound.stop(sound);
     }    
 
     /**
@@ -238,7 +238,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public boolean isInQuestion() {
-	return mCurrentQuestion != null;
+        return mCurrentQuestion != null;
     }
 
     /**
@@ -263,146 +263,146 @@ public class Game extends Canvas implements Runnable {
      * Shows the main menu
      */
     public void mainMenu() {
-	reset();
-	setState(States.MAINMENU);
-	setMenu("MainMenu");
+        reset();
+        setState(States.MAINMENU);
+        setMenu("MainMenu");
     }
 
     /**
      * Starts a new Game
      */
     public void play() {
-	reset();
-	setState(States.PLAYING);
-	addEntity(mPlayer);
+        reset();
+        setState(States.PLAYING);
+        addEntity(mPlayer);
     }
 
     /**
      * Pauses the game and shows the Pause Menu
      */
     public void pause() {
-	setState(States.PAUSED);
-	setMenu("PauseMenu");
+        setState(States.PAUSED);
+        setMenu("PauseMenu");
     }
 
     /**
      * Resumes the game after being paused
      */
     public void resume() {
-	setState(States.PLAYING);
-	mCurrentMenu = null;
+        setState(States.PLAYING);
+        mCurrentMenu = null;
     }
     
     /**
      * Called when the player lose
      */
     public void gameOver() {
-	mCurrentQuestion = null;
-	setState(States.GAMEOVER);
-	setMenu("GameOverMenu");
-	mScoresManager.addScore(mPlayer.getName(), mPlayer.getPoints());
+        mCurrentQuestion = null;
+        setState(States.GAMEOVER);
+        setMenu("GameOverMenu");
+        mScoresManager.addScore(mPlayer.getName(), mPlayer.getPoints());
     }
 
     /**
      * Prepares the game to quit
      */
     public void quit() {
-	reset();
-	System.exit(0);
+        reset();
+        System.exit(0);
     }
 
     /**
      * Resets the game as it's first started
      */
     public void reset() {
-	mCurrentQuestion = null;
-	mCurrentMenu = null;
-	mEntities.clear();
-	mMap.reset();
-	mPlayer.reset();
+        mCurrentQuestion = null;
+        mCurrentMenu = null;
+        mEntities.clear();
+        mMap.reset();
+        mPlayer.reset();
     }
 
     /**
      * Checks and handles the collision between entities
      */
     public void collisionHandling() {
-	if(mState != States.PLAYING) return;
+        if(mState != States.PLAYING) return;
 
-	// Iterates through the list
-	Entity entity = null;
+        // Iterates through the list
+        Entity entity = null;
 
-	ListIterator<Entity> it = mEntities.listIterator();
-	while(it.hasNext()) {
-	    entity = it.next();
+        ListIterator<Entity> it = mEntities.listIterator();
+        while(it.hasNext()) {
+            entity = it.next();
 
-	    // Checks collision between the player and the entities
-	    if(entity.collidesWith(mPlayer)) {
-		if(entity.getType() == Entity.Type.WALL) {
-		    mSound.play("hurt");
-		    gameOver();
-		}
-		else if(entity.getType() == Entity.Type.COIN) {
-		    mSound.play("coin");
-		    entity.setAlive(false);
-		    mPlayer.addCoin();
-		}
-		else if(entity.getType() == Entity.Type.QBOX) {
-		    mSound.play("question");
-		    mCurrentQuestion = ((QuestionBox) entity).getQuestion();
-		    entity.setAlive(false);
+            // Checks collision between the player and the entities
+            if(entity.collidesWith(mPlayer)) {
+                if(entity.getType() == Entity.Type.WALL) {
+                    mSound.play("hurt");
+                    gameOver();
+                }
+                else if(entity.getType() == Entity.Type.COIN) {
+                    mSound.play("coin");
+                    entity.setAlive(false);
+                    mPlayer.addCoin();
+                }
+                else if(entity.getType() == Entity.Type.QBOX) {
+                    mSound.play("question");
+                    mCurrentQuestion = ((QuestionBox) entity).getQuestion();
+                    entity.setAlive(false);
 		
-		}
-	    }
+                }
+            }
 
-	    // Removes all the QuestionBox if a Question is being shown
-	    if(entity.getType() == Entity.Type.QBOX && mCurrentQuestion != null)
-		entity.setAlive(false);
+            // Removes all the QuestionBox if a Question is being shown
+            if(entity.getType() == Entity.Type.QBOX && mCurrentQuestion != null)
+                entity.setAlive(false);
 
-	    // Checks if the entity has passed the screen
-	    if(entity.getRight() < 0)
-		entity.setAlive(false); // Removes the entity from the list
+            // Checks if the entity has passed the screen
+            if(entity.getRight() < 0)
+                entity.setAlive(false); // Removes the entity from the list
 
-	    if(!entity.isAlive()) it.remove();
+            if(!entity.isAlive()) it.remove();
 
-	}
+        }
 
-	// Checks collision between the question's options and the player
-	if(mCurrentQuestion != null && !mCurrentQuestion.isAnswered()) {
-	    mCurrentQuestion.checkCollision(mPlayer);
+        // Checks collision between the question's options and the player
+        if(mCurrentQuestion != null && !mCurrentQuestion.isAnswered()) {
+            mCurrentQuestion.checkCollision(mPlayer);
 	    
-	    // If the player selected the correct option 
-	    if(mCurrentQuestion.getState() == Question.State.CORRECT) {
-		mSound.play("correct");
-		mPlayer.addPoint();
-		mPlayer.setVX(mPlayer.getVX() + 10);
-		mCurrentQuestion = null;
-	    }
-	    // If the player selected an incorrect option
-	    else if(mCurrentQuestion.getState() == Question.State.WRONG) {
-		mSound.play("wrong");
+            // If the player selected the correct option 
+            if(mCurrentQuestion.getState() == Question.State.CORRECT) {
+                mSound.play("correct");
+                mPlayer.addPoint();
+                mPlayer.setVX(mPlayer.getVX() + 10);
+                mCurrentQuestion = null;
+            }
+            // If the player selected an incorrect option
+            else if(mCurrentQuestion.getState() == Question.State.WRONG) {
+                mSound.play("wrong");
 		
-		if(mPlayer.getCoins() >= 100) {
-		    mPlayer.addPoint();
-		    mPlayer.setCoins(mPlayer.getCoins() - 100);
-		}
-		else
-		    gameOver();
+                if(mPlayer.getCoins() >= 100) {
+                    mPlayer.addPoint();
+                    mPlayer.setCoins(mPlayer.getCoins() - 100);
+                }
+                else
+                    gameOver();
 
-		mCurrentQuestion = null;
-	    }
-	}
+                mCurrentQuestion = null;
+            }
+        }
 
-	// Player and Map collision. Keeps the player between the Map Bounds
-	if(mPlayer.getBottom() > mMap.getBottomBound()) {
-	    mPlayer.setBottom(mMap.getBottomBound());
-	    mPlayer.setVY(0);
-	    mPlayer.running(true);
-	    //mSound.play("run", true);
-	}
-	else if(mPlayer.getTop() < mMap.getTopBound()) {
-	    mPlayer.setTop(mMap.getTopBound());
-	    mPlayer.setVY(0);
-	}
+        // Player and Map collision. Keeps the player between the Map Bounds
+        if(mPlayer.getBottom() > mMap.getBottomBound()) {
+            mPlayer.setBottom(mMap.getBottomBound());
+            mPlayer.setVY(0);
+            mPlayer.running(true);
+            //mSound.play("run", true);
+        }
+        else if(mPlayer.getTop() < mMap.getTopBound()) {
+            mPlayer.setTop(mMap.getTopBound());
+            mPlayer.setVY(0);
+        }
     }
 
     /**
@@ -411,7 +411,7 @@ public class Game extends Canvas implements Runnable {
      * @param duration Time elapsed since last update
      */
     public void updateGame(double duration) {
-	if(mState != States.PLAYING && mState != States.MAINMENU) return;
+        if(mState != States.PLAYING && mState != States.MAINMENU) return;
 	    
         // Moves the map
         mMap.move(duration);
@@ -420,9 +420,9 @@ public class Game extends Canvas implements Runnable {
         for(Entity entity : mEntities)
             entity.move(duration);
 
-	// Moves the question
-	if(mCurrentQuestion != null)
-	    mCurrentQuestion.move(duration);
+        // Moves the question
+        if(mCurrentQuestion != null)
+            mCurrentQuestion.move(duration);
 
     }
 
@@ -447,32 +447,32 @@ public class Game extends Canvas implements Runnable {
         for(Entity entity : mEntities)
             entity.draw(g);
 
-	// Draws the menu if it's set
-	if(mCurrentMenu != null)
-	    mCurrentMenu.draw(g);
+        // Draws the menu if it's set
+        if(mCurrentMenu != null)
+            mCurrentMenu.draw(g);
 	
-	if(mState == States.PLAYING || mState == States.PAUSED) {
-	    mPauseButton.draw(g);
+        if(mState == States.PLAYING || mState == States.PAUSED) {
+            mPauseButton.draw(g);
 	    
-	    // Draws the HUD
-	    mHUD.draw(g);
-	}
-	else if(mState == States.GAMEOVER) {
-	    // Draws the score
-	    g.setColor(Color.WHITE);
-	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
-	    g.drawString("!Perdiste!", 330, 150);
-	    g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
-	    g.drawString("Puntuacion: " + mPlayer.getPoints(), 360, 200);
+            // Draws the HUD
+            mHUD.draw(g);
+        }
+        else if(mState == States.GAMEOVER) {
+            // Draws the score
+            g.setColor(Color.WHITE);
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
+            g.drawString("!Perdiste!", 330, 150);
+            g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+            g.drawString("Puntuacion: " + mPlayer.getPoints(), 360, 200);
 
-	}
+        }
 	
-	// Draws the question
-	if(mCurrentQuestion != null && mState != States.PAUSED)
-	    mCurrentQuestion.draw(g);
+        // Draws the question
+        if(mCurrentQuestion != null && mState != States.PAUSED)
+            mCurrentQuestion.draw(g);
 
-	if(mState == States.MAINMENU)
-	    g.drawImage(Images.getImage("/entities/mathjetpack.png"), 80 , 0, null);
+        if(mState == States.MAINMENU)
+            g.drawImage(Images.getImage("/entities/mathjetpack.png"), 80 , 0, null);
 
         // Shows the info related to the game for debugging purposes
         if(mShowInfo)
@@ -489,7 +489,7 @@ public class Game extends Canvas implements Runnable {
      */
     public void run() {
 
-	init();
+        init();
 
         // Auxiliary to obtain the frame rate
         int frameCount = 0;
@@ -509,27 +509,27 @@ public class Game extends Canvas implements Runnable {
 
             current = System.nanoTime();
             elapsed = (current - previous) / 1000000000.0;
-	    previous = current;
+            previous = current;
 
             t1s = System.nanoTime(); // Updating start
             updateGame(elapsed);
-	    t1e = System.nanoTime(); // Updating end
+            t1e = System.nanoTime(); // Updating end
             
-	    collisionHandling();
+            collisionHandling();
 
-	    t2s = System.nanoTime(); // Rendering start
-	    render();
-	    t2e = System.nanoTime(); // Rendering end
+            t2s = System.nanoTime(); // Rendering start
+            render();
+            t2e = System.nanoTime(); // Rendering end
 
-	    sleepTime = (period - (System.nanoTime() - current)) / 1000000;            
+            sleepTime = (period - (System.nanoTime() - current)) / 1000000;            
 
             if(sleepTime < 0)
                 sleepTime = 0;
 
             try {
-		t3s = System.nanoTime(); // Sleeping start
+                t3s = System.nanoTime(); // Sleeping start
                 Thread.sleep(sleepTime);
-		t3e = System.nanoTime(); // Sleeping end
+                t3e = System.nanoTime(); // Sleeping end
             }
             catch(InterruptedException e) {
                 System.out.println("Exception in main loop");
@@ -543,13 +543,12 @@ public class Game extends Canvas implements Runnable {
                 frameTime = current;
             }
 		 
-	    // Debug info
-	    if(mPrintInfo) {
-		System.out.printf(
-		"Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\tSleepTime: %.4f\n",
-		elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate, sleepTime / 1000.0);
-	    }
-	}
+            // Debug info
+            if(mPrintInfo) {
+                System.out.printf("Total time elapsed: %.4f\tTime updating: %.4f\tTime rendering: %.4f\tTime Sleeping: %.4f\tFPS: %d\tSleepTime: %.4f\n",
+                                  elapsed, (t1e - t1s) / 1000000000.0, (t2e - t2s) / 1000000000.0, (t3e - t3s) / 1000000000.0, mFrameRate, sleepTime / 1000.0);
+            }
+        }
     }
 
     /**
@@ -567,7 +566,7 @@ public class Game extends Canvas implements Runnable {
      */
     private void printDebugInfo(Graphics2D g, BufferStrategy bs) {
         g.setColor(Color.BLACK);
-	g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
         g.drawString("Press D to show/hide the debugging information", 10, 20);
         g.drawString("FPS: " + mFrameRate, 10, 40);
     }

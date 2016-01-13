@@ -1,7 +1,1 @@
-rom: 7
-rz: 0
-rz: 0
-rz: 0
-rz: 0
-rom: 0
-rom: 0
+Rom: 3

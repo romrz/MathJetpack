@@ -22,11 +22,11 @@ public class Input implements KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-	// Apply thrust to the jetpack
-	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-	    mGame.playSound("jetpack", true);
-	    mGame.getPlayer().applyThrust();
-	}
+        // Apply thrust to the jetpack
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            mGame.playSound("jetpack", true);
+            mGame.getPlayer().applyThrust();
+        }
 
     }
 
@@ -39,11 +39,11 @@ public class Input implements KeyListener, MouseListener {
             System.out.println("KEY EVENT");
         }
 
-	// Removes the thrust from the jetpack 
-	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-	    mGame.stopSound("jetpack");
-	    mGame.getPlayer().removeThrust();
-	}
+        // Removes the thrust from the jetpack 
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+            mGame.stopSound("jetpack");
+            mGame.getPlayer().removeThrust();
+        }
 
         // Exits the game
     }
@@ -59,15 +59,15 @@ public class Input implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-	// Handles the input on Menu Buttons
-	if(mGame.getCurrentMenu() != null)
-	    mGame.getCurrentMenu().inputHandling(e);
+        // Handles the input on Menu Buttons
+        if(mGame.getCurrentMenu() != null)
+            mGame.getCurrentMenu().inputHandling(e);
 	
-	if(mGame.getPauseButton().isPressed(e.getX(), e.getY()))
-	    if(mGame.getState() == Game.States.PAUSED)
-		mGame.resume();
-	    else
-		mGame.pause();
+        if(mGame.getPauseButton().isPressed(e.getX(), e.getY()))
+            if(mGame.getState() == Game.States.PAUSED)
+                mGame.resume();
+            else
+                mGame.pause();
     }
     
     @Override

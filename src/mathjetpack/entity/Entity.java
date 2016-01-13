@@ -60,14 +60,14 @@ public class Entity {
         mPosition = new Vector2();
         mVelocity = new Vector2();
         mAcceleration = new Vector2();
-	mResultingAcc = new Vector2();
-	mForceAccum = new Vector2();
+        mResultingAcc = new Vector2();
+        mForceAccum = new Vector2();
 	
-	setInverseMass(0.0);
+        setInverseMass(0.0);
 
-	mCollidable = true;
-	mVisible = true;
-	mAlive = true;
+        mCollidable = true;
+        mVisible = true;
+        mAlive = true;
     }
 
     public void setWidth(int width) {
@@ -87,47 +87,47 @@ public class Entity {
     }
 
     public void setTop(int top) {
-	mPosition.y = top;
+        mPosition.y = top;
     }
 
     public int getTop() {
-	return (int) mPosition.y;
+        return (int) mPosition.y;
     }
 
     public void setBottom(int bottom) {
-	mPosition.y = bottom - mHeight;
+        mPosition.y = bottom - mHeight;
     }
 
     public int getBottom() {
-	return (int) mPosition.y + mHeight;
+        return (int) mPosition.y + mHeight;
     }
 
     public void setLeft(int left) {
-	mPosition.x = left;
+        mPosition.x = left;
     }
 
     public int getLeft() {
-	return (int) mPosition.x;
+        return (int) mPosition.x;
     }
 
     public void setRight(int right) {
-	mPosition.x = right - mWidth;
+        mPosition.x = right - mWidth;
     }
 
     public int getRight() {
-	return (int) mPosition.x + mWidth;
+        return (int) mPosition.x + mWidth;
     }
 
     public void setMass(double mass) {
-	mInverseMass = 1.0 / mass;
+        mInverseMass = 1.0 / mass;
     }
 
     public void setInverseMass(double inverseMass) {
-	mInverseMass = inverseMass;
+        mInverseMass = inverseMass;
     }
 
     public double getMass() {
-	return 1.0 / mInverseMass;
+        return 1.0 / mInverseMass;
     }
 
     public void setPosition(double x, double y) {
@@ -136,15 +136,15 @@ public class Entity {
     }
     
     public void setX(double x) {
-	mPosition.x = x;
+        mPosition.x = x;
     }
     
     public void setY(double y) {
-	mPosition.y = y;
+        mPosition.y = y;
     }
 
     public final Vector2 getPosition() {
-	return mPosition;
+        return mPosition;
     }
 
     public void setVelocity(double x, double y) {
@@ -153,23 +153,23 @@ public class Entity {
     }
 
     public void setVY(double vy) {
-	mVelocity.y = vy;
+        mVelocity.y = vy;
     }
 
     public void setVX(double vx) {
-	mVelocity.x = vx;
+        mVelocity.x = vx;
     }
 
     public double getVX() {
-	return mVelocity.x;
+        return mVelocity.x;
     }
 
     public double getVY() {
-	return mVelocity.y;
+        return mVelocity.y;
     }
 
     public final Vector2 getVelocity() {
-	return mVelocity;
+        return mVelocity;
     }
 
     public void setAcceleration(double x, double y) {
@@ -178,20 +178,20 @@ public class Entity {
     }
 
     public void addAcceleration(double x, double y) {
-	mAcceleration.x += x;
-	mAcceleration.y += y;
+        mAcceleration.x += x;
+        mAcceleration.y += y;
     }
 
     public void addForce(Vector2 force) {
-	mForceAccum.addVector(force);
+        mForceAccum.addVector(force);
     }
 
     public void setRelativeVelocity(Vector2 v) {
-	mRelativeVelocity = v;
+        mRelativeVelocity = v;
     }
 
     public void setImage(BufferedImage image) {
-	mImage = image;
+        mImage = image;
     }
 
     public BufferedImage getImage() {
@@ -199,35 +199,35 @@ public class Entity {
     }
 
     public void setType(Type type) {
-	mType = type;
+        mType = type;
     }
 
     public Type getType() {
-	return mType;
+        return mType;
     }
 
     public void setCollidable(boolean collidable) {
-	mCollidable = collidable;
+        mCollidable = collidable;
     }
     
     public boolean isCollidable() {
-	return mCollidable;
+        return mCollidable;
     }
 
     public void setVisible(boolean visible) {
-	mVisible = visible;
+        mVisible = visible;
     }
 
     public boolean isVisible() {
-	return mVisible;
+        return mVisible;
     }
 
     public void setAlive(boolean alive) {
-	mAlive = alive;
+        mAlive = alive;
     }
 
     public boolean isAlive() {
-	return mAlive;
+        return mAlive;
     }
 
     /**
@@ -236,9 +236,9 @@ public class Entity {
      * @param e The entity to check if this entity collides with 
      */
     public boolean collidesWith(Entity e) {
-	return getRight() > e.getLeft() && getLeft() < e.getRight()
-	    && getBottom() > e.getTop() && getTop() < e.getBottom()
-	    && this != e;
+        return getRight() > e.getLeft() && getLeft() < e.getRight()
+            && getBottom() > e.getTop() && getTop() < e.getBottom()
+            && this != e;
     }
 
     /**
@@ -249,19 +249,19 @@ public class Entity {
      */
     public void move(double duration) {
 	
-	// Gets the acceleration applied to this entity in this frame
-	mResultingAcc.addVector(mAcceleration);
-	mResultingAcc.addScaledVector(mForceAccum, mInverseMass);
+        // Gets the acceleration applied to this entity in this frame
+        mResultingAcc.addVector(mAcceleration);
+        mResultingAcc.addScaledVector(mForceAccum, mInverseMass);
 
         // Updates the position from the velocity
-	mPosition.x += (mVelocity.x - mRelativeVelocity.x) * duration;
-	mPosition.y += (mVelocity.y) * duration;
+        mPosition.x += (mVelocity.x - mRelativeVelocity.x) * duration;
+        mPosition.y += (mVelocity.y) * duration;
         // Updates the velocity from acceleration
         mVelocity.addScaledVector(mResultingAcc, duration);
 
-	// Clear the accumulators
-	mForceAccum.clear();
-	mResultingAcc.clear();
+        // Clear the accumulators
+        mForceAccum.clear();
+        mResultingAcc.clear();
     }
 
     /**
@@ -270,7 +270,7 @@ public class Entity {
      * @param g The graphics onto which to draw the entity
      */
     public void draw(Graphics2D g) {
-	if(mImage != null)
-	    g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
+        if(mImage != null)
+            g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, mWidth, mHeight, null);
     }
 }
