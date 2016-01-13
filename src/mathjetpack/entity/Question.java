@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 
+import mathjetpack.Vector2;
 
 public class Question extends Entity {
     
@@ -24,41 +25,41 @@ public class Question extends Entity {
     private double mDistanceLeft;
 
     public Question(String question) {
-	super();
+        super();
 
-	mQuestion = question;
-	mState = State.NO_SELECTED;
+        mQuestion = question;
+        mState = State.NO_SELECTED;
 
-	mOptions = new ArrayList<Option>();
+        mOptions = new ArrayList<Option>();
 
-	mDistanceLeft = 400;
+        mDistanceLeft = 400;
     }
 
     public void reset() {	
-	mState = State.NO_SELECTED;
-	mDistanceLeft = 400;
+        mState = State.NO_SELECTED;
+        mDistanceLeft = 400;
     }
 
     public void setState(State state) {
-	mState = state;
+        mState = state;
     }
 
     public State getState() {
-	return mState;
+        return mState;
     }
 
     public boolean isAnswered() {
-	return mState != State.NO_SELECTED;
+        return mState != State.NO_SELECTED;
     }
 
     public void addOption(Option o) {
-	mOptions.add(o);
+        mOptions.add(o);
     }
 
     public void setOptionsPosition(double x) {
 	
-	for(Option o : mOptions)
-	    o.setX(x - 40);
+        for(Option o : mOptions)
+            o.setX(x - 40);
 	
     }
 
@@ -71,18 +72,18 @@ public class Question extends Entity {
      * @return The state of the question
      */
     public State checkCollision(Entity entity) {
-	for(Option option : mOptions) {
-	    if(option.collidesWith(entity) && !isAnswered())
-		if(option.isCorrect())
-		    mState = State.CORRECT;
-		else
-		    mState = State.WRONG;
-	}
+        for(Option option : mOptions) {
+            if(option.collidesWith(entity) && !isAnswered())
+                if(option.isCorrect())
+                    mState = State.CORRECT;
+                else
+                    mState = State.WRONG;
+        }
 
-	if(mState == State.NO_SELECTED && entity.getLeft() > mOptions.get(0).getRight())
-	    mState = State.WRONG;
+        if(mState == State.NO_SELECTED && entity.getLeft() > mOptions.get(0).getRight())
+            mState = State.WRONG;
 	
-	return mState;
+        return mState;
     }
 
     /**
@@ -93,40 +94,54 @@ public class Question extends Entity {
      */
     public void move(double duration) {
 	
-	mDistanceLeft -= mVelocity.x * duration;
+        mDistanceLeft -= mVelocity.x * duration;
 
-	if(mDistanceLeft <= 0)
-	    for(Option option : mOptions) {
-		option.move(duration);
-	    }
+        if(mDistanceLeft <= 0) {
+            for(Option option : mOptions) {
+                option.move(duration);
+            }
+        }
+    }
+
+    public void setOptionsRelativeVelocity(Vector2 velocity) {
+        for(Option option : mOptions) {
+            option.setRelativeVelocity(velocity);
+        }
+    }
+    
+    public void pack(int width, int height) {
+        int posY = height / 6;
+        for(Option option : mOptions) {
+            option.setPosition(width - getWidth() - 20 - 40, posY);
+            posY += height / 4;
+        }
     }
 
     /**
      * Draws the question and its options
      */
     public void draw(Graphics2D g) {
+        if(mWidth == 0 || mHeight == 0) {
+            mWidth = g.getFontMetrics().stringWidth(mQuestion);
+            mHeight = g.getFontMetrics().getHeight();
+        }
+	
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        g.drawString(mQuestion, getLeft(), getBottom());
 
-	if(mWidth == 0 || mHeight == 0) {
-	    mWidth = g.getFontMetrics().stringWidth(mQuestion);
-	    mHeight = g.getFontMetrics().getHeight();
-	}
-	
-	g.setColor(Color.WHITE);
-	g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-	g.drawString(mQuestion, getLeft(), getBottom());
-	
-	for(Option option : mOptions) {
-	    option.draw(g);
-	}
+        for(Option option : mOptions) {
+            option.draw(g);
+        }
     }
 
     public String toString() {
     
-	String string = mQuestion + " ";
+        String string = mQuestion + " ";
     
-	for(Option o : mOptions)
-	    string += o.toString() + " ";
+        for(Option o : mOptions)
+            string += o.toString() + " ";
 
-	return string;
+        return string;
     }
 }

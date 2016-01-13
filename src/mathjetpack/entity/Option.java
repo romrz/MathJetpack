@@ -19,41 +19,45 @@ public class Option extends AnimatedEntity {
     private int mTextHeight;
 
     public Option(String text) {
-	super();
+        super();
 
-	mText = text;
-	mCorrect = false;
+        mText = text;
+        mCorrect = false;
 
-	mWidth = 30;
-	mHeight = 30;
+        mWidth = 30;
+        mHeight = 30;
 
-	setImage(Images.getImage("/entities/option.png"));
+        setImage(Images.getImage("/entities/option.png"));
 
-	addAnimation(new AnimationInfo(0, 1, 1, 1, true));
-	setAnimation(1);
+        addAnimation(new AnimationInfo(0, 1, 1, 1, true));
+        setAnimation(1);
+    }
+    public Option(String text, boolean correct) {
+        this(text);
+        setCorrect(correct);
     }
 
     public void setCorrect(boolean c) {
-	mCorrect = c;
+        mCorrect = c;
     }
 
     public boolean isCorrect() {
-	return mCorrect;
+        return mCorrect;
     }
 
     public void draw(Graphics2D g) {
-	super.draw(g);
+        super.draw(g);
 
-	if(mTextWidth == 0 || mTextHeight == 0) {
-	    mTextWidth = g.getFontMetrics().stringWidth(mText);
-	    mTextHeight = g.getFontMetrics().getHeight();
-	}
+        if(mTextWidth == 0 || mTextHeight == 0) {
+            mTextWidth = g.getFontMetrics().stringWidth(mText);
+            mTextHeight = g.getFontMetrics().getHeight();
+        }
 
-	g.setColor(Color.WHITE);
-	g.drawString(mText, getLeft() - mTextWidth - 10, getTop() + (mHeight / 2) + mTextHeight / 2);
+        g.setColor(Color.WHITE);
+        g.drawString(mText, getLeft() - mTextWidth - 10, getTop() + (mHeight / 2) + mTextHeight / 2);
     }
 
     public String toString() {
-	return mCorrect ? "*" + mText : mText;
+        return mCorrect ? "*" + mText : mText;
     }
 }

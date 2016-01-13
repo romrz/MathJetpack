@@ -34,32 +34,32 @@ public final class Images {
      */
     public static BufferedImage getImage(String path) {
        
-	if(mImages.containsKey(path))
-	    return mImages.get(path);
+        if(mImages.containsKey(path))
+            return mImages.get(path);
 
-	// Loads the image
-	BufferedImage auxImage = null;
-	try {
-	    auxImage = ImageIO.read(Images.class.getResource(path));
-	    //
-	    System.out.println(Images.class.getResource(path).toString());
-	}
-	catch(Exception e) {
-	    System.out.println("Error loading the image: " + path);
-	    System.exit(0);
-	}
+        // Loads the image
+        BufferedImage auxImage = null;
+        try {
+            auxImage = ImageIO.read(Images.class.getResource(path));
+            //
+            System.out.println(Images.class.getResource(path).toString());
+        }
+        catch(Exception e) {
+            System.out.println("Error loading the image: " + path);
+            System.exit(0);
+        }
 
-	// Create a compatible image with the device
-	GraphicsConfiguration gc = 
-	    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-	BufferedImage image = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
-	Graphics2D g = (Graphics2D) image.createGraphics();
-	g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
-	g.dispose();
+        // Create a compatible image with the device
+        GraphicsConfiguration gc = 
+            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        BufferedImage image = gc.createCompatibleImage(auxImage.getWidth(), auxImage.getHeight(), Transparency.BITMASK);
+        Graphics2D g = (Graphics2D) image.createGraphics();
+        g.drawImage(auxImage, 0, 0, auxImage.getWidth(), auxImage.getHeight(), null);
+        g.dispose();
 
-	// Stores the image
-	mImages.put(path, image);
+        // Stores the image
+        mImages.put(path, image);
 
-	return image;
+        return image;
     }
 }

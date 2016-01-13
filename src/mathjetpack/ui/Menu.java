@@ -42,20 +42,20 @@ public class Menu {
     }
 
     public void setBackground(BufferedImage bg) {
-	mBackgroundImage = bg;
+        mBackgroundImage = bg;
     }
 
     public void setPosition(int x, int y) {
-	mPosition.x = x;
-	mPosition.y = y;
+        mPosition.x = x;
+        mPosition.y = y;
     }
 
     public void setWidth(int w) {
-	mWidth = w;
+        mWidth = w;
     }
     
     public void setHeight(int h) {
-	mHeight = h;
+        mHeight = h;
     }
 
     /**
@@ -64,17 +64,17 @@ public class Menu {
      * width an height
      */
     public void addButton(Button btn) {
-	mButtons.add(btn);
-	btn.setWidth(mWidth - 2 * mMargin);
+        mButtons.add(btn);
+        btn.setWidth(mWidth - 2 * mMargin);
 	
-	int n = mButtons.size();
-	int y = (int) mPosition.y - mHeight / 2;
-	for(Button b : mButtons) {
-	    b.setHeight(mHeight / n - 2 * mMargin);
-	    b.setPosition(mPosition.x, y + mMargin);
+        int n = mButtons.size();
+        int y = (int) mPosition.y - mHeight / 2;
+        for(Button b : mButtons) {
+            b.setHeight(mHeight / n - 2 * mMargin);
+            b.setPosition(mPosition.x, y + mMargin);
 	    
-	    y += b.getHeight() + 2 * mMargin;
-	}
+            y += b.getHeight() + 2 * mMargin;
+        }
     }
 
     /**
@@ -82,27 +82,22 @@ public class Menu {
      */
     public void inputHandling(MouseEvent e) {
         for (Button b : mButtons) {
-	    if(b.isPressed(e.getX(), e.getY())) {
+            if(b.isPressed(e.getX(), e.getY())) {
 		
-		mGame.playSound("select", false);
+                mGame.playSound("select", false);
 
-		if(b.getText().equals("Jugar")) {
+                if(b.getText().equals("Jugar")) {
 
-		    Player p = mGame.getPlayer();
+                    Player p = mGame.getPlayer();
 		    
-		    if(p.getName() == null)
-			p.setName(JOptionPane.showInputDialog(mGame, "Jugador:", "Nombre del jugador", JOptionPane.QUESTION_MESSAGE));
-		    
-		    mGame.play();
-		}
-		else if(b.getText().equals("Pausar")) mGame.pause();
-		else if(b.getText().equals("Reanudar")) mGame.resume();
-		else if(b.getText().equals("Reiniciar")) mGame.play();
-		else if(b.getText().equals("Menu Principal")) mGame.mainMenu();
-		else if(b.getText().equals("Salir")) mGame.quit();
-		else if(b.getText().equals("Puntuaciones")) mGame.showScores();
-		else if(b.getText().equals("Preguntas")) mGame.showQuestionManager();
-	    }
+                    mGame.play();
+                }
+                else if(b.getText().equals("Pausar")) mGame.pause();
+                else if(b.getText().equals("Reanudar")) mGame.resume();
+                else if(b.getText().equals("Reiniciar")) mGame.play();
+                else if(b.getText().equals("Menu Principal")) mGame.mainMenu();
+                else if(b.getText().equals("Salir")) mGame.quit();
+            }
         }
     }
 

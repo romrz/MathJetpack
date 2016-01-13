@@ -27,11 +27,11 @@ public class AnimatedEntity extends Entity {
     public AnimatedEntity() {
         super();
 
-     	// Default animation settings
-	mAnimations = new ArrayList<AnimationInfo>();
+        // Default animation settings
+        mAnimations = new ArrayList<AnimationInfo>();
 	
-	mFrames = 1;
-	mColumns = 1;
+        mFrames = 1;
+        mColumns = 1;
     }
 
     /**
@@ -41,14 +41,14 @@ public class AnimatedEntity extends Entity {
      *        information for a nes animation
      */
     public void addAnimation(AnimationInfo animation) {
-	mAnimations.add(animation);
+        mAnimations.add(animation);
     }
 
     /**
      * Sets the current animation
      */
     public void setAnimation(int a) {
-	mAnimationIndex = a > 0 ? a - 1 : 0;
+        mAnimationIndex = a > 0 ? a - 1 : 0;
         mCurrentAnimation = mAnimations.get(mAnimationIndex);
     }
 
@@ -57,7 +57,7 @@ public class AnimatedEntity extends Entity {
      * @param frames
      */
     public void setImageFrames(int frames) {
-	mFrames = frames;
+        mFrames = frames;
     }
 
     /**
@@ -65,14 +65,14 @@ public class AnimatedEntity extends Entity {
      * @param columns
      */
     public void setColumns(int columns) {
-	mColumns = columns;
+        mColumns = columns;
     }
     
     /**
      * Animates the entity
      */
     public void animate(double duration) {
-	mCurrentAnimation.update(duration);
+        mCurrentAnimation.update(duration);
     }
 
     /**
@@ -82,9 +82,9 @@ public class AnimatedEntity extends Entity {
      * @param duration The duration of the frame
      */
     public void move(double duration) {
-	super.move(duration);
+        super.move(duration);
 
-	animate(duration);
+        animate(duration);
     }
 
     /**
@@ -94,10 +94,10 @@ public class AnimatedEntity extends Entity {
      */
     public void draw(Graphics2D g) {
 
-	int frameX = (mCurrentAnimation.getCurrentFrame() % mColumns) * mWidth;
-	int frameY = (mCurrentAnimation.getCurrentFrame() / mColumns) * mHeight;
+        int frameX = (mCurrentAnimation.getCurrentFrame() % mColumns) * mWidth;
+        int frameY = (mCurrentAnimation.getCurrentFrame() / mColumns) * mHeight;
 
         g.drawImage(mImage, (int) mPosition.x, (int) mPosition.y, (int) mPosition.x + mWidth, (int) mPosition.y + mHeight,
-		    frameX, frameY, frameX + mWidth, frameY + mHeight, null);
+                    frameX, frameY, frameX + mWidth, frameY + mHeight, null);
     }
 }

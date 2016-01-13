@@ -28,7 +28,7 @@ public class Button {
         mWidth = 110;
         mHeight = 30;
 
-	mPosition = new Vector2();
+        mPosition = new Vector2();
     }
 
     public String getText() {
@@ -57,11 +57,11 @@ public class Button {
     }
 
     public void setX(double x) {
-	mPosition.x = x;
+        mPosition.x = x;
     }
     
     public void setY(double y) {
-	mPosition.y = y;
+        mPosition.y = y;
     }
 
     /**
@@ -69,7 +69,7 @@ public class Button {
      */
     public boolean isPressed(int x, int y) {
         return x >= mPosition.x - mWidth / 2 && x <= mPosition.x + mWidth / 2
-	    && y >= mPosition.y - mHeight / 2 && y <= mPosition.y + mHeight / 2;
+            && y >= mPosition.y - mHeight / 2 && y <= mPosition.y + mHeight / 2;
     }
 
     /**
@@ -83,10 +83,10 @@ public class Button {
         g.setColor(Color.RED);
         g.fillRect(x, y, mWidth, mHeight);
      
-	Rectangle2D rect = g.getFontMetrics().getStringBounds(mText, g);
+        Rectangle2D rect = g.getFontMetrics().getStringBounds(mText, g);
 	
-	x = (int) (mPosition.x - rect.getWidth() / 2);
-	y = (int) (mPosition.y + rect.getHeight() / 2);
+        x = (int) (mPosition.x - rect.getWidth() / 2);
+        y = (int) (mPosition.y + rect.getHeight() / 2);
 
         g.setColor(Color.WHITE);
         g.drawString(mText, x, y);

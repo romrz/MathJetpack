@@ -56,8 +56,6 @@ public class Game extends Canvas implements Runnable {
     // Current Question. If it's not null then it's shown on screen
     private Question mCurrentQuestion;
 
-    private ScoresManager mScoresManager;
-
     /**
      * HUD
      * Shows the number of questions answered correctly
@@ -126,7 +124,6 @@ public class Game extends Canvas implements Runnable {
         mHUD = new HUD(this);
         mMap = new Map(this, mWidth, mHeight, mPlayer.getVelocity());
         mSound = new Sound();
-        mScoresManager = new ScoresManager();
 
         loadMenus();
         mainMenu();
@@ -146,8 +143,6 @@ public class Game extends Canvas implements Runnable {
         menu = new Menu(this);
         menu.setPosition(mWidth / 2, 3 * mHeight / 4);
         menu.addButton(new Button("Jugar"));
-        menu.addButton(new Button("Puntuaciones"));
-        menu.addButton(new Button("Preguntas"));
         menu.addButton(new Button("Salir"));
         mMenus.put("MainMenu", menu);
 
@@ -164,14 +159,6 @@ public class Game extends Canvas implements Runnable {
         menu.addButton(new Button("Jugar"));
         menu.addButton(new Button("Menu Principal"));
         mMenus.put("GameOverMenu", menu);
-    }
-
-    public void showQuestionManager() {
-        mMap.showQuestionManager();
-    }
-
-    public void showScores() {
-        mScoresManager.showScores();
     }
 
     /**
@@ -300,7 +287,6 @@ public class Game extends Canvas implements Runnable {
         mCurrentQuestion = null;
         setState(States.GAMEOVER);
         setMenu("GameOverMenu");
-        mScoresManager.addScore(mPlayer.getName(), mPlayer.getPoints());
     }
 
     /**
@@ -567,7 +553,6 @@ public class Game extends Canvas implements Runnable {
     private void printDebugInfo(Graphics2D g, BufferStrategy bs) {
         g.setColor(Color.BLACK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-        g.drawString("Press D to show/hide the debugging information", 10, 20);
         g.drawString("FPS: " + mFrameRate, 10, 40);
     }
 }

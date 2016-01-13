@@ -28,25 +28,21 @@ public class EntitiesGenerator {
     protected QuestionManager mQuestionManager;
     
     public EntitiesGenerator(Game game, Map map) {
-	mGame = game;
-	mMap = map;
+        mGame = game;
+        mMap = map;
 
-	next = 1000;
+        next = 1000;
 	
-	rand = new Random();
+        rand = new Random();
 
-	mQuestionManager = new QuestionManager(mGame);
-    }
-
-    public void showQuestionManager() {
-	mQuestionManager.showFrame();
+        mQuestionManager = new QuestionManager(mGame);
     }
 
     /**
      * Resets the entities generator
      */
-     public void reset() {
-	next = 1000;
+    public void reset() {
+        next = 1000;
     }
 
     /**
@@ -54,11 +50,11 @@ public class EntitiesGenerator {
      * position, generates a new entity randomly
      */
     public void update() {
-	if(mGame.getState() != Game.States.PLAYING) return;
+        if(mGame.getState() != Game.States.PLAYING) return;
 
-	if(mMap.getX() >= next) {
-	    generate(rand.nextInt(3) + 1);
-	}
+        if(mMap.getX() >= next) {
+            generate(rand.nextInt(3) + 1);
+        }
     }
    
     /**
@@ -68,34 +64,34 @@ public class EntitiesGenerator {
      */
     public int generateCoins() {
 	
-	Entity e = new Coin();
+        Entity e = new Coin();
 	
-	int c = rand.nextInt(6) + 1;
-	int r = rand.nextInt(c) + 1;
+        int c = rand.nextInt(6) + 1;
+        int r = rand.nextInt(c) + 1;
 
-	int w = e.getWidth();
-	int h = e.getHeight();
+        int w = e.getWidth();
+        int h = e.getHeight();
 	
-	int y = rand.nextInt(mMap.getBottomBound() - r * h);
-	int x = 1000;
+        int y = rand.nextInt(mMap.getBottomBound() - r * h);
+        int x = 1000;
 
-	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
-	e.setPosition(x, y);
-	mGame.addEntity(e);
+        e.setRelativeVelocity(mGame.getPlayer().getVelocity());
+        e.setPosition(x, y);
+        mGame.addEntity(e);
 
-	// Generates a group of coins
-	for(int i = 0; i < r; i++) {
-	    for(int j = 0; j < c; j++) {
-		if(i == 0 && j == 0) continue;
+        // Generates a group of coins
+        for(int i = 0; i < r; i++) {
+            for(int j = 0; j < c; j++) {
+                if(i == 0 && j == 0) continue;
 
-		e = new Coin();
-		e.setRelativeVelocity(mGame.getPlayer().getVelocity());
-		e.setPosition(x + w * j, y + h * i);
-		mGame.addEntity(e);
-	    }
-	}
+                e = new Coin();
+                e.setRelativeVelocity(mGame.getPlayer().getVelocity());
+                e.setPosition(x + w * j, y + h * i);
+                mGame.addEntity(e);
+            }
+        }
 
-	return w * c;
+        return w * c;
     }
 
     /**
@@ -105,24 +101,26 @@ public class EntitiesGenerator {
      */
     public int generateQuestionBox() {
 
-	if(mGame.isInQuestion()) return 0;
+        if(mGame.isInQuestion()) return 0;
 
-	Vector2 relVel = mGame.getPlayer().getVelocity();
+        Vector2 relVel = mGame.getPlayer().getVelocity();
 
-	QuestionBox e = new QuestionBox();
-	e.setRelativeVelocity(relVel);
-	e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
+        QuestionBox e = new QuestionBox();
+        e.setRelativeVelocity(relVel);
+        e.setPosition(1000, rand.nextInt(mMap.getBottomBound()));
 
-	Question question = mQuestionManager.getQuestion(); 
-	question.setVelocity(relVel.x, relVel.y);
-	question.setPosition(mGame.getWidth() / 4, 20);
-	question.setOptionsPosition(mGame.getWidth() - 40);
-	question.reset();
+        Question question = mQuestionManager.getQuestion(); 
+        question.setVelocity(relVel.x, relVel.y);
+        question.setPosition(mGame.getWidth() / 4, 20);
+        question.setOptionsPosition(mGame.getWidth() - 40);
+        question.setOptionsRelativeVelocity(relVel);
+        question.pack(mGame.getWidth(), mGame.getHeight());
+        question.reset();
 
-	e.setQuestion(question);
+        e.setQuestion(question);
 
-	mGame.addEntity(e);
-	return e.getWidth();
+        mGame.addEntity(e);
+        return e.getWidth();
     }
 
     /**
@@ -131,12 +129,12 @@ public class EntitiesGenerator {
      * @return The width of the generated entities 
      */
     public int generateWall() {
-	Entity e = new Wall(rand.nextInt(10) + 1);
-	e.setRelativeVelocity(mGame.getPlayer().getVelocity());
-	e.setPosition(1000, mMap.getBottomBound() - e.getHeight());
-	mGame.addEntity(e);
+        Entity e = new Wall(rand.nextInt(10) + 1);
+        e.setRelativeVelocity(mGame.getPlayer().getVelocity());
+        e.setPosition(1000, mMap.getBottomBound() - e.getHeight());
+        mGame.addEntity(e);
 
-	return e.getWidth();
+        return e.getWidth();
     }
 
     /**
@@ -144,10 +142,10 @@ public class EntitiesGenerator {
      */
     public void generate(int i) {
 	
-	if(i == 1) next += generateCoins();
-	else if(i == 2) next += generateQuestionBox();
-	else if(i == 3) next += generateWall();
+        if(i == 1) next += generateCoins();
+        else if(i == 2) next += generateQuestionBox();
+        else if(i == 3) next += generateWall();
 
-	next += 400;
+        next += 400;
     }
 }
